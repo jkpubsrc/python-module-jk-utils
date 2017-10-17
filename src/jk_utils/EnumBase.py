@@ -59,6 +59,10 @@ class EnumBase(enum.Enum):
 				else:
 					return None
 		elif isinstance(data, str):
+			for key in cls.__dict__["_value2member_map_"]:
+				enumItem = cls.__dict__["_value2member_map_"][key]
+				if str(enumItem) == data:
+					return enumItem
 			if data in cls.__dict__["_member_names_"]:
 				return cls.__dict__[data]
 			else:

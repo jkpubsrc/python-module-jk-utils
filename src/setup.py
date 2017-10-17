@@ -14,10 +14,15 @@ setup(name='jk_utils',
 	license='Apache 2.0',
 	url='https://github.com/jkpubsrc/python-module-jk-utils',
 	download_url='https://github.com/jkpubsrc/python-module-jk-utils/tarball/0.2017.8.28',
-	keywords=['utils'],
-	packages=['jk_utils'],
+	keywords=[
+		'utils'
+	],
+	packages=[
+		'jk_utils'
+	],
 	install_requires=[
-		"jk_simpleexec"
+		"netiface",
+		"jk_simpleexec",
 	],
 	include_package_data=True,
 	classifiers=[

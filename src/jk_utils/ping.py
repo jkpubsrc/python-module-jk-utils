@@ -55,6 +55,8 @@ def __checksum(source_string):
 	answer = answer >> 8 | (answer << 8 & 0xff00)
 
 	return answer
+#
+
 
 
 #
@@ -94,6 +96,8 @@ def __receive_one_ping(my_socket, ID, timeout):
 		timeLeft = timeLeft - howLongInSelect
 		if timeLeft <= 0:
 			return (None, None)
+#
+
 
 
 #
@@ -142,6 +146,8 @@ def __receive_multiple_pings(my_socket, ID, timeout, count):
 		timeLeft = timeLeft - howLongInSelect
 		if timeLeft <= 0:
 			return ret
+#
+
 
 
 #
@@ -178,13 +184,13 @@ def __send_one_ping(my_socket, dest_ip_addr, ID):
 		return True
 	except OSError:
 		return False
-
 #
 
 
 
 #
 # Perform a single ping to the specified address.
+# You must be root to invoke this function.
 #
 # @param		string destinationAddress	The destination host to send the ping packet to. This can either be a host name or an IP address.
 # @param		int timeout					The timeout in seconds to wait for a response.
@@ -214,10 +220,12 @@ def pingSingeHost(destinationAddress, timeout):
 
 	my_socket.close()
 	return destIPAddr, delay
+#
 
 
 #
 # Send a ping to multiple hosts at the same time.
+# You must be root to invoke this function.
 #
 # @param		string[] destinationAddresses	An iterable of destination addresses. These can either be a host name or an IP address.
 #												You should not attempt to use more than 300 IP addresses in this list as it has been found
@@ -293,6 +301,7 @@ def pingMultipleHosts(destinationAddresses, timeout, orderByIPAddr = False):
 
 	my_socket.close()
 	return dataMap
+#
 
 
 
