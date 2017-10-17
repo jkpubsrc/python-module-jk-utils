@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='jk_utils',
-	version='0.2017.8.28',
+	version='0.2017.10.17',
 	description='This python module provides various utility functions and classes.',
 	author='Jürgen Knauth',
 	author_email='pubsrc@binary-overflow.de',
