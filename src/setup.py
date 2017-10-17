@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='jk_utils',
-	version='0.2017.10.17',
+	version='0.2017.10.17.1',
 	description='This python module provides various utility functions and classes.',
 	author='Jürgen Knauth',
 	author_email='pubsrc@binary-overflow.de',
@@ -21,7 +21,7 @@ setup(name='jk_utils',
 		'jk_utils'
 	],
 	install_requires=[
-		"netiface",
+		"netifaces",
 		"jk_simpleexec",
 	],
 	include_package_data=True,
