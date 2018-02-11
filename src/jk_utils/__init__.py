@@ -17,6 +17,7 @@ from . import tokenizer
 from .MutableString import MutableString
 from .TextCanvas import TextCanvas
 from .TextTable import TextTable, TextTableCell
+from .CmdLineParser import CmdLineParser
 
 
 
