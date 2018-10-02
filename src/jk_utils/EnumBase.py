@@ -18,24 +18,47 @@ class EnumBase(enum.Enum):
 		member._value_ = value
 		member.fullname = name
 		return member
+	#
 
 	#
 	# Get an integer representation of this enumeration item.
 	#
 	def __int__(self):
 		return self._value_
+	#
 
 	#
 	# Get a string representation of this enumeration item.
 	#
 	def __str__(self):
 		return self.fullname
+	#
+
+	#
+	# Get a string representation of this enumeration item.
+	#
+	def __repr__(self):
+		return self.fullname
+	#
 
 	#
 	# Get an integer representation of this enumeration item.
 	#
 	def toJSON(self):
 		return self._value_
+	#
+
+	#
+	# Get a list of all states this enumeration contains.
+	#
+	@classmethod
+	def allStates(cls):
+		ret = []
+		for key in cls.__dict__["_value2member_map_"]:
+			enumItem = cls.__dict__["_value2member_map_"][key]
+			ret.append(enumItem)
+		return ret
+	#
 
 	#
 	# This method converts a string or integer representing an enumeration value to an actual enumeration value.
@@ -74,9 +97,9 @@ class EnumBase(enum.Enum):
 			return data
 		else:
 			raise Exception("Unrecognized enumeration value type: " + repr(data))
+	#
+
 #
-
-
 
 
 

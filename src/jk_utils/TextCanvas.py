@@ -50,6 +50,30 @@ class TextCanvas(object):
 		self.__rows[y2].setChar(x2, "+")
 	#
 
+	def drawRectangleEx(self, x1, y1, x2, y2, charBorderTop = "-", charBorderRight = "|", charBorderBottom = "-", charBorderLeft = "|"):
+		assert isinstance(x1, int)
+		assert isinstance(y1, int)
+		assert isinstance(x2, int)
+		assert isinstance(y2, int)
+
+		self.ensureSize(x2 + 1, y2 + 1)
+		for x in range(x1, x2):
+			self.__rows[y1].setChar(x, charBorderTop)
+			self.__rows[y2].setChar(x, charBorderBottom)
+		for y in range(y1, y2):
+			self.__rows[y].setChar(x1, charBorderLeft)
+			self.__rows[y].setChar(x2, charBorderRight)
+
+		if (charBorderLeft != " ") or (charBorderRight != " "):
+			self.__rows[y1].setChar(x1, "+")	# top left
+		if (charBorderRight != " ") or (charBorderRight != " "):
+			self.__rows[y1].setChar(x2, "+")	# top right
+		if (charBorderLeft != " ") or (charBorderBottom != " "):
+			self.__rows[y2].setChar(x1, "+")	# bottom left
+		if (charBorderRight != " ") or (charBorderBottom != " "):
+			self.__rows[y2].setChar(x2, "+")	# bottom right
+	#
+
 	def drawTextLines(self, x, y, textLines):
 		assert isinstance(x, int)
 		assert isinstance(y, int)

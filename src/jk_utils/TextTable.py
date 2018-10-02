@@ -127,11 +127,12 @@ class TextTable(object):
 			self.rowNo = rowNo
 			self.__pos = 0
 		#
-		def createCell(self, textLines, colSpan, rowSpan):
+		def createCell(self, textLines, colSpan = 1, rowSpan = 1):
 			while self.table.getCell(self.__pos, self.rowNo) != None:
 				self.__pos += 1
 			self.table.setCell(self.__pos, self.rowNo, textLines, colSpan, rowSpan)
 			self.__pos += colSpan
+			return self
 		#
 	#
 
@@ -162,7 +163,7 @@ class TextTable(object):
 		return self.__countColumns
 	#
 
-	def setCell(self, x, y, textLines, colSpan, rowSpan):
+	def setCell(self, x, y, textLines, colSpan = 1, rowSpan = 1):
 		if isinstance(textLines, str):
 			textLines = [ textLines ]
 		elif isinstance(textLines, list):
@@ -271,10 +272,19 @@ class TextTable(object):
 		return columnWidths
 	#
 
-	def paintToTextCanvas(self, textCanvas = None, extraHGapLeft = 1, extraHGapRight = 1):
+	def paintToTextCanvas(self, textCanvas = None, extraHGapLeft = 1, extraHGapRight = 1, bCompact = False):
 		if textCanvas is None:
 			textCanvas = TextCanvas()
 
+		if bCompact:
+			self.__paintToTextCanvasNoBorders(textCanvas, extraHGapLeft, extraHGapRight)
+		else:
+			self.__paintToTextCanvasWithBorders(textCanvas, extraHGapLeft, extraHGapRight)
+
+		return textCanvas
+	#
+
+	def __paintToTextCanvasWithBorders(self, textCanvas, extraHGapLeft, extraHGapRight):
 		columnWidths = self._calcColumnWidths(extraHGapLeft, extraHGapRight)
 		xPositions = [ 0 ]
 		for w in columnWidths:
@@ -308,7 +318,38 @@ class TextTable(object):
 		return textCanvas
 	#
 
-	def createRow(self, bIsHeading):
+	def __paintToTextCanvasNoBorders(self, textCanvas, extraHGapLeft, extraHGapRight):
+		columnWidths = self._calcColumnWidths(extraHGapLeft, extraHGapRight)
+		xPositions = [ 0 ]
+		for w in columnWidths:
+			xPositions.append(xPositions[-1] + w + 1)
+
+		rowHeights = self._calcRowHeights()
+		yPositions = [ 0 ]
+		for h in rowHeights:
+			yPositions.append(yPositions[-1] + h)
+
+		#print("columnWidths=" + str(columnWidths))
+		#print("xPositions=" + str(xPositions))
+		#print("rowHeights=" + str(rowHeights))
+		#print("yPositions=" + str(yPositions))
+
+		textCanvas.ensureSize(xPositions[-1] + 1, yPositions[-1] + 1)
+
+		for row in self.__rows:
+			for cell in row:
+				if cell is None:
+					continue
+				x1 = xPositions[cell.x]
+				y1 = yPositions[cell.y]
+				x2 = xPositions[cell.x + cell.colSpan]
+				y2 = yPositions[cell.y + cell.rowSpan]
+				textCanvas.drawTextLines(x1 + 1 + extraHGapLeft, y1 + 1, cell.textLines)
+
+		return textCanvas
+	#
+
+	def createRow(self, bIsHeading = False):
 		n = len(self.__rows)
 		if bIsHeading:
 			self.__headingRows.add(n)
@@ -336,8 +377,8 @@ class TextTable(object):
 		return None
 	#
 
-	def print(self):
-		textCanvas = self.paintToTextCanvas(extraHGapLeft = 1, extraHGapRight = 1)
+	def print(self, bCompact = False):
+		textCanvas = self.paintToTextCanvas(extraHGapLeft = 1, extraHGapRight = 1, bCompact = bCompact)
 		textCanvas.print()
 	#
 
