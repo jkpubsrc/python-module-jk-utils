@@ -110,7 +110,9 @@ class RoundRobinSequence(object):
 		if self.__count == 0:
 			return None
 
-		if self.__startI < self.__endI:
+		if self.__startI == self.__endI:
+			totalSum = sum(self.__items)
+		elif self.__startI < self.__endI:
 			totalSum = sum(self.__items[self.__startI:self.__endI])
 		else:
 			totalSum = sum(self.__items[self.__startI:]) + sum(self.__items[:self.__endI])
@@ -121,7 +123,9 @@ class RoundRobinSequence(object):
 		if self.__count == 0:
 			return None
 
-		if self.__startI < self.__endI:
+		if self.__startI == self.__endI:
+			return min(self.__items)
+		elif self.__startI < self.__endI:
 			return min(self.__items[self.__startI:self.__endI])
 		else:
 			a = min(self.__items[self.__startI:])
@@ -133,11 +137,14 @@ class RoundRobinSequence(object):
 		if self.__count == 0:
 			return None
 
-		if self.__startI < self.__endI:
+		if self.__startI == self.__endI:
+			return max(self.__items)
+		elif self.__startI < self.__endI:
 			return max(self.__items[self.__startI:self.__endI])
 		else:
 			a = max(self.__items[self.__startI:])
-			b = max(self.__items[:self.__endI])
+			if self.__endI > 0:
+				b = max(self.__items[:self.__endI])
 			return a if a > b else b
 	#
 
