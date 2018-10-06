@@ -15,10 +15,11 @@ setup(name='jk_utils',
 	url='https://github.com/jkpubsrc/python-module-jk-utils',
 	download_url='https://github.com/jkpubsrc/python-module-jk-utils/tarball/0.2018.9.20',
 	keywords=[
-		'utils'
+		"utilities"
 	],
 	packages=[
-		'jk_utils'
+		"jk_utils",
+		"jk_utils.async",
 	],
 	install_requires=[
 		#"netifaces",

@@ -4,6 +4,7 @@ from . import ping
 from . import hex
 from . import reflection
 from . import pathutils
+from . import fsutils
 from .GracefullyHandleKeyboardInterrupt import GracefullyHandleKeyboardInterrupt
 from .DelayedKeyboardInterrupt import DelayedKeyboardInterrupt
 from .GracefullyHandleInterrupts import GracefullyHandleInterrupts

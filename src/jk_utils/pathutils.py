@@ -1,6 +1,7 @@
 
 
 import os
+import collections
 
 
 def makeAbsDirPathAndCheckDirExists(baseDir:str, dirPath:str):
@@ -56,9 +57,8 @@ def findMountPoint(path:str):
             # we crossed the device border
             break
         path = pdir
-    return path, orig_dev
+    return path
 #
-
 
 
 
