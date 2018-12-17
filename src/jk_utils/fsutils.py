@@ -4,7 +4,7 @@ import os
 import collections
 
 
-DiskSpaceStats = collections.namedtuple("DiskSpaceStats", [
+FileSystemStats = collections.namedtuple("FileSystemStats", [
 	"bytesTotal", "bytesUsed", "bytesFreeSystem", "bytesFreeUser", "rateBytesUsed",
 	"inodesTotal", "inodesUsed", "inodesFree", "rateInodesUsed"
 ])
@@ -23,11 +23,23 @@ def getFileSystemStats(mountPointPath):
 	inodesUsed = inodesTotal - inodesFree
 	rateInodesUsed = (inodesUsed / inodesTotal) if inodesTotal > 0 else 1
 
-	return DiskSpaceStats(
+	return FileSystemStats(
 		bytesTotal, bytesUsed, bytesFreeSystem, bytesFreeUser, rateBytesUsed,
 		inodesTotal, inodesUsed, inodesFree, rateInodesUsed
 		)
 #
 
+def findMountPoint(path:str):
+    path = os.path.abspath(path)
+    orig_dev = os.stat(path).st_dev
+
+    while path != '/':
+        pdir = os.path.dirname(path)
+        if os.stat(pdir).st_dev != orig_dev:
+            # we crossed the device border
+            break
+        path = pdir
+    return path
+#
 
 

@@ -7,13 +7,13 @@ def readme():
 
 
 setup(name='jk_utils',
-	version='0.2018.9.20',
+	version='0.2018.12.7',
 	description='This python module provides various utility functions and classes.',
 	author='Jürgen Knauth',
 	author_email='pubsrc@binary-overflow.de',
 	license='Apache 2.0',
 	url='https://github.com/jkpubsrc/python-module-jk-utils',
-	download_url='https://github.com/jkpubsrc/python-module-jk-utils/tarball/0.2018.9.20',
+	download_url='https://github.com/jkpubsrc/python-module-jk-utils/tarball/0.2018.12.7',
 	keywords=[
 		"utilities"
 	],
@@ -27,7 +27,7 @@ setup(name='jk_utils',
 	],
 	include_package_data=True,
 	classifiers=[
-		'Development Status :: 4 - Beta',
+		'Development Status :: 5 - Production/Stable',
 		'Programming Language :: Python :: 3.5',
 		'License :: OSI Approved :: Apache Software License'
 	],

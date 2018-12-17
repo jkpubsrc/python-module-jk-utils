@@ -4,6 +4,41 @@ import os
 import collections
 
 
+def setFileExt(filePath:str, newFileExt:str):
+	if not newFileExt.startswith("."):
+		newFileExt = "." + newFileExt
+
+	pos = filePath.rfind("/")
+	if pos > 0:
+		dirPath = filePath[:pos+1]
+		filePath = filePath[pos+1:]
+	else:
+		dirPath = ""
+
+	pos = filePath.rfind(".")
+	if pos > 0:
+		filePath = filePath[:pos] + newFileExt
+	else:
+		filePath += newFileExt
+
+	return dirPath + filePath
+#
+
+def getFileExt(filePath:str):
+	pos = filePath.rfind("/")
+	if pos > 0:
+		dirPath = filePath[:pos+1]
+		filePath = filePath[pos+1:]
+	else:
+		dirPath = ""
+
+	pos = filePath.rfind(".")
+	if pos > 0:
+		return filePath[:pos + 1]
+	else:
+		return None
+#
+
 def makeAbsDirPathAndCheckDirExists(baseDir:str, dirPath:str):
 	if baseDir:
 		if not os.path.isdir(baseDir):
@@ -47,18 +82,6 @@ def makeAbsFilePathAndCheckBaseDirExists(baseDir:str, filePath:str):
 	return filePath
 #
 
-def findMountPoint(path:str):
-    path = os.path.abspath(path)
-    orig_dev = os.stat(path).st_dev
-
-    while path != '/':
-        pdir = os.path.dirname(path)
-        if os.stat(pdir).st_dev != orig_dev:
-            # we crossed the device border
-            break
-        path = pdir
-    return path
-#
 
 
 
