@@ -30,6 +30,8 @@ from .AsyncRunner import AsyncRunner
 from .TimeLimitedCache import TimeLimitedCache
 from .RoundRobinSequence import RoundRobinSequence
 from .MultiCounterDict import MultiCounterDict
+from .Version import Version
+from .pythonmodules import PythonModuleInfo, PythonModules
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
