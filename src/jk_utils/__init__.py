@@ -37,5 +37,9 @@ from .pythonmodules import PythonModuleInfo, PythonModules
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
 
 
+__version__ = "0.2019.1.22"
+
+
+
 
 

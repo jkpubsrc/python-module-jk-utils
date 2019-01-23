@@ -377,23 +377,28 @@ class TextTable(object):
 		return None
 	#
 
-	def print(self, bCompact = False):
+	def print(self, bCompact = False, printFunction = None):
 		textCanvas = self.paintToTextCanvas(extraHGapLeft = 1, extraHGapRight = 1, bCompact = bCompact)
-		textCanvas.print()
+		textCanvas.print(printFunction = printFunction)
 	#
 
-	def dump(self):
-		print("TextTable(")
-		print("\tcountColumns=" + str(self.__countColumns))
-		print("\tcountRows=" + str(len(self.__rows)))
-		print("\theadingRows=" + str(self.__headingRows))
-		print("\trows=[")
+	def dump(self, printFunction = None):
+		if printFunction is None:
+			printFunction = print
+		else:
+			assert callable(printFunction)
+
+		printFunction("TextTable(")
+		printFunction("\tcountColumns=" + str(self.__countColumns))
+		printFunction("\tcountRows=" + str(len(self.__rows)))
+		printFunction("\theadingRows=" + str(self.__headingRows))
+		printFunction("\trows=[")
 		i = 0
 		for row in self.__rows:
-			print("\t\t" + str(i) + "\t" + str(row))
+			printFunction("\t\t" + str(i) + "\t" + str(row))
 			i += 1
-		print("\t]")
-		print(")")
+		printFunction("\t]")
+		printFunction(")")
 	#
 
 #

@@ -100,9 +100,14 @@ class TextCanvas(object):
 		self.__rows[y].setText(x, textLine)
 	#
 
-	def print(self):
+	def print(self, printFunction = None):
+		if printFunction is None:
+			printFunction = print
+		else:
+			assert callable(printFunction)
+
 		for line in self.__rows:
-			print(line)
+			printFunction(str(line))
 	#
 
 	def toTextLines(self, prefix = None, bRightStrip = True):

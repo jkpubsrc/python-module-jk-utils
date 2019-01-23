@@ -36,7 +36,7 @@ class PersistentProperties(object):
 
 	def put(self, key:str, value):
 		assert isinstance(key, str)
-		assert isinstance(value, (int, float, str, type(None)))
+		assert isinstance(value, (int, float, str, type(None), list, tuple, dict))
 
 		self.__data[key] = value
 

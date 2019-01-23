@@ -40,7 +40,7 @@ class PythonModuleInfo(object):
 			assert isinstance(expectedMinimumVersion, Version)
 
 		if self.__v is None:
-			return True
+			return False
 		else:
 			return expectedMinimumVersion >= self.__v
 	#
@@ -55,9 +55,14 @@ class PythonModules(object):
 		self.__moduleInfos = self.__listLoadedModules()
 	#
 
-	def dump(self, prefix:str = ""):
+	def dump(self, prefix:str = "", printFunction = None):
+		if printFunction is None:
+			printFunction = print
+		else:
+			assert callable(printFunction)
+
 		for moduleInfo in self.__moduleInfos:
-			print(prefix + str(moduleInfo))
+			printFunction(prefix + str(moduleInfo))
 	#
 
 	def moduleInfos(self):
