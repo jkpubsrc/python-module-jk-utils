@@ -4,6 +4,14 @@ import json
 
 
 
+#
+# Maybe use https://stackoverflow.com/questions/18406165/creating-a-timer-in-python/18406263
+# in order to delay writes for 2 seconds?
+#
+
+
+
+
 class PersistentProperties(object):
 
 	def __init__(self, filePath:str, bAutoStore:bool = True):
