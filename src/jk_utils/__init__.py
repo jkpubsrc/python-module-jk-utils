@@ -33,12 +33,14 @@ from .RoundRobinSequence import RoundRobinSequence
 from .MultiCounterDict import MultiCounterDict
 from .Version import Version
 from .pythonmodules import PythonModuleInfo, PythonModules
+from .ChModValue import ChModValue
+from . import users
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
 
 
-__version__ = "0.2019.2.20"
+__version__ = "0.2019.8.12"
 
 
 

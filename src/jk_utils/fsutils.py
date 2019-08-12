@@ -42,4 +42,14 @@ def findMountPoint(path:str):
     return path
 #
 
+def getFolderSize(dirPath:str):
+    total_size = os.path.getsize(dirPath)
+    for item in os.listdir(dirPath):
+        itempath = os.path.join(dirPath, item)
+        if os.path.isfile(itempath):
+            total_size += os.path.getsize(itempath)
+        elif os.path.isdir(itempath):
+            total_size += getFolderSize(itempath)
+    return total_size
+#
 

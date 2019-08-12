@@ -46,12 +46,21 @@ class PersistentProperties(object):
 		assert isinstance(key, str)
 		assert isinstance(value, (int, float, str, type(None), list, tuple, dict))
 
-		self.__data[key] = value
+		if key in self.__data:
+			if value != self.__data[key]:
+				self.__data[key] = value
 
-		if self.__bAutoStore:
-			self.__store()
+				if self.__bAutoStore:
+					self.__store()
+				else:
+					self.__bChanged = True
 		else:
-			self.__bChanged = True
+			self.__data[key] = value
+
+			if self.__bAutoStore:
+				self.__store()
+			else:
+				self.__bChanged = True
 	#
 
 	def get(self, key:str, defaultValue = None):
@@ -66,10 +75,10 @@ class PersistentProperties(object):
 		if key in self.__data:
 			del self.__data[key]
 
-		if self.__bAutoStore:
-			self.__store()
-		else:
-			self.__bChanged = True
+			if self.__bAutoStore:
+				self.__store()
+			else:
+				self.__bChanged = True
 	#
 
 	def store(self):
