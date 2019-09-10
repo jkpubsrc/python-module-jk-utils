@@ -1,7 +1,4 @@
-﻿#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-
+﻿
 
 
 import os
@@ -198,7 +195,7 @@ def __send_one_ping(my_socket, dest_ip_addr, ID):
 #											* the sender IP address as string
 #											* the delay in seconds (possibly <c>None</c> if the destination did not reply)
 #
-def pingSingeHost(destinationAddress, timeout):
+def pingSingleHost(destinationAddress, timeout):
 	if os.geteuid() != 0:
 		raise Exception("Pings can only be sent as root!")
 

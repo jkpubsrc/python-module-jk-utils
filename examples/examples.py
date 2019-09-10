@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 
 import json
@@ -20,7 +19,7 @@ print(json.dumps(
 print("#### PERFORM SINGLE PING ####\n")
 
 print(json.dumps(
-	jk_utils.ping.pingSingeHost("www.google.com", 2),
+	jk_utils.ping.pingSingleHost("www.google.com", 2),
 	indent="\t",
 	sort_keys=True
 	))

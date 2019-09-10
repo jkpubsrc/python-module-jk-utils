@@ -40,7 +40,7 @@ from . import users
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
 
 
-__version__ = "0.2019.8.12"
+__version__ = "0.2019.9.10.1"
 
 
 
