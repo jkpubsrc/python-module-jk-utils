@@ -70,7 +70,7 @@ class EnumBase(enum.Enum):
 	#													an integer nor of the enumeration type itself.)
 	#
 	@classmethod
-	def parse(cls, data, bRaiseExceptionOnError = True):
+	def parse(cls, data, bRaiseExceptionOnError:bool = True):
 		if isinstance(data, int):
 			if data in cls.__dict__["_value2member_map_"]:
 				return cls.__dict__["_value2member_map_"][data]

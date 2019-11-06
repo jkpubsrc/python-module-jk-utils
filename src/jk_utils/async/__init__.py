@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 
 
 
@@ -10,3 +10,6 @@ from .TabularWriterSTDOUT import *
 
 
 
+
+
+__version__ = "0.2019.11.6"

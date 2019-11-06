@@ -1,0 +1,54 @@
+{
+	"language": "python3",
+	"name": "jk_utils",
+	"version": "0.2019.11.6",
+	"meta": {
+		"description": "This python module provides various utility functions and classes.",
+		"keywords": [
+			"utilities"
+		],
+		"license": "Apache 2.0",
+		"development_status": "stable",
+		"authors": [
+			{
+				"name": "Jürgen Knauth",
+				"email": "pubsrc@binary-overflow.de"
+			}
+		],
+		"wiki": {
+			"page": "DevDocs:jk_utils"
+		}
+	},
+	"repositories": [
+		{
+			"type": "github",
+			"user": "jkpubsrc",
+			"project": "python-module-jk-utils",
+			"devon_publish": false
+		},
+		{
+			"type": "pypy",
+			"project": "jk_utils",
+			"devon_publish": false
+		}
+	],
+	"source": {
+		"packages": [
+			"jk_utils",
+			"jk_utils.async"
+		],
+		"extra_data_files": [
+		]
+	},
+	"requirements": {
+		"python_packages": [
+			"sh",
+			"sortedcontainers",
+			"jk_simpleexec",
+			"jk_logging"
+		],
+		"python_packages_dev": [
+		]
+	}
+}
+

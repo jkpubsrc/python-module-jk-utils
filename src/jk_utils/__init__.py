@@ -1,4 +1,4 @@
-from . import file_rw
+﻿from . import file_rw
 from . import mac
 from . import ip
 from . import ping
@@ -40,9 +40,7 @@ from . import users
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
 
 
-__version__ = "0.2019.9.10.1"
-
-
+__version__ = "0.2019.11.6"
 
 
 

@@ -75,6 +75,31 @@ class ChModValue:
 		return self.__str__()
 	#
 
+	def toStrChMod(self):
+		vU = ""
+		if self.userR:
+			vU += "r"
+		if self.userW:
+			vU += "w"
+		if self.userX:
+			vU += "x"
+		vG = ""
+		if self.groupR:
+			vG += "r"
+		if self.groupW:
+			vG += "w"
+		if self.groupX:
+			vG += "x"
+		vO = ""
+		if self.otherR:
+			vO += "r"
+		if self.otherW:
+			vO += "w"
+		if self.otherX:
+			vO += "x"
+		return "u=" + vU + ",g=" + vG + ",o=" + vO
+	#
+
 	#
 	# Accept data from the specified integer value.
 	#
