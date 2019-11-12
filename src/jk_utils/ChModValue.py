@@ -40,6 +40,10 @@ class ChModValue:
 			raise Exception("Unexected type: " + repr(type(v)))
 	#
 
+	def cloneObject(self):
+		return ChModValue(self.toInt())
+	#
+
 	def __str__(self):
 		v = [ "-" ] * 9
 		if self.userR:
