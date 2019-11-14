@@ -35,12 +35,11 @@ from .Version import Version
 from .pythonmodules import PythonModuleInfo, PythonModules
 from .ChModValue import ChModValue
 from . import users
+from .showCapacityProgress import *
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
 
 
-__version__ = "0.2019.11.6"
-
-
+__version__ = "0.2019.11.14"
 

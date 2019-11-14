@@ -12,4 +12,4 @@ from .TabularWriterSTDOUT import *
 
 
 
-__version__ = "0.2019.11.6"
+__version__ = "0.2019.11.14"
