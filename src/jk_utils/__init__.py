@@ -41,5 +41,4 @@ from .showCapacityProgress import *
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
 
 
-__version__ = "0.2019.11.14"
-
+__version__ = "0.2019.11.28"
