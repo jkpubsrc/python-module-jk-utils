@@ -23,7 +23,7 @@ setup(
 		"License :: OSI Approved :: Apache Software License",
 	],
 	description = "This python module provides various utility functions and classes.",
-	download_url = "https://github.com/jkpubsrc/python-module-jk-utils/tarball/0.2019.11.28",
+	download_url = "https://github.com/jkpubsrc/python-module-jk-utils/tarball/0.2019.12.26",
 	include_package_data = False,
 	install_requires = [
 		"sh",
@@ -39,11 +39,10 @@ setup(
 	packages = [
 		"jk_utils",
 		"jk_utils.async",
-		"jk_utils.color",
 		"jk_utils.datetime",
 	],
 	url = "https://github.com/jkpubsrc/python-module-jk-utils",
-	version = "0.2019.11.28",
+	version = "0.2019.12.26",
 	zip_safe = False,
 	long_description = readme(),
 	long_description_content_type="text/markdown",

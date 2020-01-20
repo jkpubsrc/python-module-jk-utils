@@ -43,4 +43,4 @@ from .DataMatrix import DataMatrix
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
 
 
-__version__ = "0.2019.11.28"
+__version__ = "0.2019.12.26"

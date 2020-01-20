@@ -1,14 +1,13 @@
 ﻿
 
 
-__version__ = "0.2019.11.28"
+__version__ = "0.2019.12.26"
 
 
 
 from .queues import *
 from .TabularWriterMediaWiki import *
 from .TabularWriterSTDOUT import *
-
 
 
 
