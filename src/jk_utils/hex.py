@@ -6,12 +6,12 @@ __HEXCODE = "0123456789abcdef"
 
 
 
-def byteToHex(someValue):
+def byteToHex(someValue:int) -> str:
 	assert isinstance(someValue, int)
 	someValue = someValue & 255
 	return __HEXCODE[int(someValue / 16)] + __HEXCODE[someValue % 16]
 
-def byteArrayToHexStr(someByteArray):
+def byteArrayToHexStr(someByteArray) -> str:
 	assert isinstance(someByteArray, (bytes, bytearray))
 	ret = ""
 	for someValue in someByteArray:
@@ -20,7 +20,7 @@ def byteArrayToHexStr(someByteArray):
 		ret += __HEXCODE[int(someValue / 16)] + __HEXCODE[someValue % 16]
 	return ret
 
-def hexStrToByteArray(someHexArray):
+def hexStrToByteArray(someHexArray:str) -> bytearray:
 	if (len(someHexArray) % 2) != 0:
 		raise Exception("Not a valid hex string!")
 	someHexArray = someHexArray.lower()
@@ -35,7 +35,7 @@ def hexStrToByteArray(someHexArray):
 		dataArray.append(pA * 16 + pB)
 	return dataArray
 
-def hexToByte(someHexString, offset):
+def hexToByte(someHexString:str, offset:int) -> int:
 	someHexString = someHexString.lower()
 	charA = someHexString[offset]
 	charB = someHexString[offset + 1]

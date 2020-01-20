@@ -1,5 +1,9 @@
 
 
+import re
+
+
+
 
 class T5(object):
 
@@ -10,6 +14,37 @@ class T5(object):
 		self._absoluteTick = 0
 	#
 
+	@staticmethod
+	def tryParseFromStr(s:str):
+		if isinstance(s, str):
+			s = s.strip()
+			for hour, minute, second in T5.__tryParse(s):
+				return T5.createFromTime(hour, minute)
+		return None
+	#
+
+	@staticmethod
+	def __tryParse(s:str):
+		for patternType, pattern in [
+			("hms", r"(?P<hour>\d\d):(?P<minute>\d\d):(?P<second>\d\d)"),
+			("hm", r"(?P<hour>\d\d):(?P<minute>\d\d)"),
+		]:
+			m = re.match("^" + pattern + "$", s)
+			if m:
+				if patternType == "hms":
+					hour = m.group("hour")
+					minute = m.group("minute")
+					second = m.group("second")
+				elif patternType == "hm":
+					hour = m.group("hour")
+					minute = m.group("minute")
+					second = 0
+				else:
+					raise Exception()
+				if (0 <= hour <= 23) and (0 <= minute <= 59) and (0 <= second <= 59):
+					yield (hour, minute, second)
+	#
+
 	@property
 	def hour(self) -> int:
 		return self._hour
@@ -18,6 +53,11 @@ class T5(object):
 	@property
 	def minute(self) -> int:
 		return self._minute
+	#
+
+	@property
+	def hourMinute(self) -> int:
+		return self._hour * 100 + self._minute
 	#
 
 	@property
@@ -62,6 +102,8 @@ class T5(object):
 		ret = T5()
 		ret._hour = hourMinutes // 100
 		ret._minute = hourMinutes % 100
+		if (ret._hour < 0) or (ret._hour > 23) or (ret._minute < 0) or (ret._minute > 59):
+			raise Exception("Invalid time!")
 		ret._minuteTick = ret._minute // 5
 		ret._absoluteTick = ret._hour * 12 + ret._minuteTick
 		return ret

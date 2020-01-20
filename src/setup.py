@@ -39,6 +39,7 @@ setup(
 	packages = [
 		"jk_utils",
 		"jk_utils.async",
+		"jk_utils.color",
 		"jk_utils.datetime",
 	],
 	url = "https://github.com/jkpubsrc/python-module-jk-utils",

@@ -36,6 +36,8 @@ from .pythonmodules import PythonModuleInfo, PythonModules
 from .ChModValue import ChModValue
 from . import users
 from .showCapacityProgress import *
+from .DataMatrix import DataMatrix
+
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef

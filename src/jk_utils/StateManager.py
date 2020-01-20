@@ -185,7 +185,7 @@ class StateManager(object):
 		allActions = self.__states[int(toState)].getActions(self.__currentState)
 		allActions.extend(self.__general)
 
-		# sort all actions so that actions with the highes priority come first
+		# sort all actions so that actions with the highest priority come first
 		allActions.sort(key=lambda a: a.priority, reverse=True)
 
 		# remember state
