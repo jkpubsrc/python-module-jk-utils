@@ -40,7 +40,7 @@ class D(object):
 
 	@property
 	def dayOfWeek(self) -> int:
-		return self._dt.weekday()
+		return self._dt.weekday() + 1
 	#
 
 	@property
@@ -51,6 +51,21 @@ class D(object):
 	@property
 	def yearMonth(self) -> int:
 		return self._dt.year * 100 + self._dt.month
+	#
+
+	#
+	# Calculates the week number
+	#
+	@property
+	def weekNo(self):
+		d = datetime.datetime(self.year, 1, 1)
+
+		# the week day of the first day in this year:
+		# 1 = monday, 2 = tuesday, ..., 7 = sunday
+		firstJanWeekDay = ((d.weekday() + 1) + 7) % 7
+		correction = 0 if firstJanWeekDay == 0 else (7 - (- firstJanWeekDay + 1))
+		td = self._dt - d
+		return (td.days + correction) // 7
 	#
 
 	# ================================================================================================================================
@@ -159,6 +174,71 @@ class D(object):
 		}
 	#
 
+	#
+	# Creates a D object representing the first of january of this year
+	#
+	def startOfYear(self):
+		ret = D()
+		ret._dt = datetime.datetime(self.year, 1, 1)
+		return ret
+	#
+
+	def nextYear(self):
+		ret = D()
+		ret._dt = datetime.datetime(self.year + 1, self.month, self.day)
+		return ret
+	#
+
+	def previousYear(self):
+		if self.year <= 1:
+			raise Exception()
+		ret = D()
+		ret._dt = datetime.datetime(self.year - 1, self.month, self.day)
+		return ret
+	#
+
+	def nextMonth(self):
+		y = self.year
+		m = self.month
+		d = self.day
+
+		if m == 12:
+			m = 1
+			y += 1
+		else:
+			m += 1
+
+		ret = D()
+		while True:
+			try:
+				ret._dt = datetime.datetime(y, m, d)
+				break
+			except ValueError as ee:
+				d -= 1
+		return ret
+	#
+
+	def previousMonth(self):
+		y = self.year
+		m = self.month
+		d = self.day
+
+		if m == 1:
+			m = 12
+			y -= 1
+		else:
+			m -= 1
+
+		ret = D()
+		while True:
+			try:
+				ret._dt = datetime.datetime(y, m, d)
+				break
+			except ValueError as ee:
+				d -= 1
+		return ret
+	#
+
 	def startOfWeek(self):
 		wd = self._dt.weekday()
 		dt = self._dt.timestamp() - 24*60*60*wd
@@ -201,6 +281,9 @@ class D(object):
 		return ret
 	#
 
+	#
+	# @return	D[]		Returns a list of date objects containing all seven days of this week.
+	#
 	def generateWeekDates(self) -> list:
 		d = self.startOfWeek()
 		ret = [ d ]
@@ -255,6 +338,14 @@ class D(object):
 	#
 
 	@staticmethod
+	def parseFromStr(s:str):
+		d = D.tryParseFromStr(s)
+		if d is None:
+			raise Exception("Failed to parse: " + repr(s))
+		return d
+	#
+
+	@staticmethod
 	def __tryParse(s:str):
 		for patternType, pattern in [
 			("ymd", r"(?P<year>\d\d\d\d)-(?P<month>\d\d)-(?P<day>\d\d)"),
@@ -271,14 +362,14 @@ class D(object):
 					except:
 						pass
 				elif patternType == "ymd":
-					year = m.group("year")
-					month = m.group("year")
-					day = m.group("year")
+					year = int(m.group("year"))
+					month = int(m.group("month"))
+					day = int(m.group("day"))
 					if (1 <= month <= 12) and (1 <= day <= 31) and (100 <= year <= 2999):
 						yield (None, year, month, day)
 				elif patternType == "md":
-					month = m.group("year")
-					day = m.group("year")
+					month = int(m.group("month"))
+					day = int(m.group("day"))
 					if (1 <= month <= 12) and (1 <= day <= 31):
 						yield (None, None, month, day)
 				else:
