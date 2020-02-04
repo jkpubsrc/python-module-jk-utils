@@ -44,6 +44,11 @@ class D(object):
 	#
 
 	@property
+	def weekday(self) -> int:
+		return self._dt.weekday() + 1
+	#
+
+	@property
 	def yearMonthDay(self) -> int:
 		return self._dt.year * 10000 + self._dt.month * 100 + self._dt.day
 	#
