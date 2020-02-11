@@ -3,7 +3,8 @@
 import sys
 from typing import Union
 
-from .Version import Version
+from jk_version import Version
+
 
 
 
