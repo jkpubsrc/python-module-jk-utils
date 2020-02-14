@@ -110,7 +110,7 @@ if os.name == 'nt':
     # Type declarations
     pSID = wintypes.HANDLE
     ENUM = ctypes.c_uint
- 
+
     class SidAndAttributes(ctypes.Structure):   # [7]
         _fields_ = (
             ('Sid', pSID),
