@@ -19,11 +19,11 @@ setup(
 	author = "Jürgen Knauth",
 	author_email = "pubsrc@binary-overflow.de",
 	classifiers = [
-		"Development Status :: 5 - Production/Stable",
+		"Development Status :: 3 - Alpha",
 		"License :: OSI Approved :: Apache Software License",
 	],
 	description = "This python module provides various utility functions and classes.",
-	download_url = "https://github.com/jkpubsrc/python-module-jk-utils/tarball/0.2020.2.14",
+	download_url = "https://github.com/jkpubsrc/python-module-jk-utils/tarball/0.2020.2.16",
 	include_package_data = False,
 	install_requires = [
 		"sh",
@@ -42,7 +42,7 @@ setup(
 		"jk_utils.datetime",
 	],
 	url = "https://github.com/jkpubsrc/python-module-jk-utils",
-	version = "0.2020.2.14",
+	version = "0.2020.2.16",
 	zip_safe = False,
 	long_description = readme(),
 	long_description_content_type="text/markdown",

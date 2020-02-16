@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.2.14"
+__version__ = "0.2020.2.16"
 
 
 
@@ -43,8 +43,17 @@ from . import users
 from .showCapacityProgress import *
 from .DataMatrix import DataMatrix
 from . import processes
+from .checkFunctionSignature import checkFunctionSignature
 
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
+
+
+
+
+
+
+
+
 
