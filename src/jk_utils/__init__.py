@@ -43,7 +43,6 @@ from . import users
 from .showCapacityProgress import *
 from .DataMatrix import DataMatrix
 from . import processes
-from .checkFunctionSignature import checkFunctionSignature
 
 
 # the data node implementation has been moved to an own package: jk_datanodes
