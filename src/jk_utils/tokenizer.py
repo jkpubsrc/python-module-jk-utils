@@ -28,9 +28,24 @@ Token = collections.namedtuple('Token', ['type', 'value', 'lineNo', 'colNo'])
 
 
 
-
+#
+# RegEx based tokenizer: This tokenizer uses regular expressions in order to create tokens.
+#
 class RegExBasedTokenizer(object):
 
+	#
+	# Initialization method
+	#
+	# @param		str[] patternDefs		A list of pattern definitions. Each pattern definition should be a tuple or list of one of the following stcutrues:
+	#										* 2 items
+	#											* (required) the token type to use on match
+	#											* (required) the pattern to match
+	#										* 4 items
+	#											* (required) the token type to use on match
+	#											* (optional) if not None a pattern to match but that will not be part of the token content
+	#											* (required) the pattern to match (which will be the content of the token)
+	#											* (optional) if not None a pattern to match but that will not be part of the token content
+	#
 	def __init__(self, patternDefs):
 		assert isinstance(patternDefs, (tuple, list))
 		assert len(patternDefs) > 0
@@ -86,7 +101,7 @@ class RegExBasedTokenizer(object):
 
 
 
-	def addTokenPattern(self, tokenType, patternRegExStr):
+	def addTokenPattern(self, tokenType:str, patternRegExStr):
 		assert isinstance(tokenType, str)
 
 		bErr = False
@@ -137,6 +152,9 @@ class RegExBasedTokenizer(object):
 
 
 
+	#
+	# @return		Token[] tokens			Returns token objects according to the pattern defined during initialization.
+	#
 	def tokenize(self, text, bEmitWhiteSpaces = False, bEmitNewLines = False):
 		if not self.isCompiled:
 			self.compile()
@@ -228,12 +246,17 @@ class AbstractTokenPattern(object):
 			for (entryType, a, b, c) in stack:
 
 				if (entryType == "v") or (entryType == "vv"):
+
+					# there is a value to store.
+
+					# step 1: get the data to store
 					token, varName, bVarIsArray = a, b, c
 					if entryType == "v":
 						value = token.value
 					else:
 						value = TypedValue(token.type, token.value)
 
+					# step 2: actually store the value
 					v = ret.get(varName, None)
 					if v is None:
 						if bVarIsArray:
@@ -312,7 +335,16 @@ class AbstractTokenPattern(object):
 #
 class TokenPattern(AbstractTokenPattern):
 
-	def __init__(self, tokenType, tokenValue = None, assignToVar = None, assignToVarTyped = None, bVarIsArray = False):
+	#
+	# @param		str tokenType			(required) The type identifier of a token, e.g. "int"
+	# @param		str tokenValue			(optional) The text value the token is expected to have for a match.
+	# @param		str assignToVar			(optional) On match use the value as the string it is within the token.
+	# @param		str assignToVarTyped	(optional) On match use the value but wrap the token text into `TypedValue`,
+	#										using the token type as type information for `TypedValue'. Thus this way type information
+	#										is preserved.
+	# @param		bool bVarIsArray		(optional) This variable is an array. If it is an array, data is stacked as an array.
+	#
+	def __init__(self, tokenType:str, tokenValue:str = None, assignToVar:str = None, assignToVarTyped:str = None, bVarIsArray:bool = False):
 		super().__init__()
 
 		assert isinstance(tokenType, str)
@@ -326,10 +358,9 @@ class TokenPattern(AbstractTokenPattern):
 		self.__assignToVar = assignToVar
 		self.__assignToVarTyped = assignToVarTyped
 		self.__bVarIsArray = bVarIsArray
-		self.__tags = None
 	#
 
-	def _tryMatch(self, tokens, pos, stack):
+	def _tryMatch(self, tokens:list, pos:int, stack:Stack):
 		assert isinstance(tokens, list)
 		assert isinstance(pos, int)
 		assert isinstance(stack, Stack)
@@ -348,7 +379,10 @@ class TokenPattern(AbstractTokenPattern):
 		return (True, 1)
 	#
 
-	def derive(self, assignToVar = None, assignToVarTyped = None, bVarIsArray = False):
+	#
+	# Derive a new token pattern from this object, modifying some attributes in the process.
+	#
+	def derive(self, assignToVar:str = None, assignToVarTyped:str = None, bVarIsArray:bool = False):
 		assert isinstance(assignToVar, (type(None), str))
 		assert isinstance(assignToVarTyped, (type(None), str))
 		assert isinstance(bVarIsArray, bool)
@@ -368,7 +402,10 @@ class TokenPattern(AbstractTokenPattern):
 #
 class TokenPatternSequence(AbstractTokenPattern):
 
-	def __init__(self, tokenPatterns):
+	#
+	# @param		AbstractTokenPattern[] tokenPatterns			(required) A sequence of token patterns to match against.
+	#
+	def __init__(self, tokenPatterns:list):
 		super().__init__()
 
 		assert isinstance(tokenPatterns, list)
@@ -401,7 +438,10 @@ class TokenPatternSequence(AbstractTokenPattern):
 			return (False, 0)
 	#
 
-	def derive(self, assignToVar = None, assignToVarTyped = None, bVarIsArray = False):
+	#
+	# Derive a new token pattern from this object, modifying some attributes in the process.
+	#
+	def derive(self, assignToVar:str = None, assignToVarTyped:str = None, bVarIsArray:bool = False):
 		assert isinstance(assignToVar, (type(None), str))
 		assert isinstance(assignToVarTyped, (type(None), str))
 		assert isinstance(bVarIsArray, bool)
@@ -422,9 +462,14 @@ class TokenPatternSequence(AbstractTokenPattern):
 #
 # A token pattern repeat pattern. The specified patteren must match at least once.
 #
+# @param		AbstractTokenPattern tokenPattern			(required) A token pattern that might be repeated multiple times.
+#
 class TokenPatternRepeat(AbstractTokenPattern):
 
-	def __init__(self, tokenPattern):
+	#
+	# @param		AbstractTokenPattern tokenPattern			(required) A token pattern to match one or more times.
+	#
+	def __init__(self, tokenPattern:AbstractTokenPattern):
 		super().__init__()
 
 		assert isinstance(tokenPattern, AbstractTokenPattern)
@@ -454,7 +499,10 @@ class TokenPatternRepeat(AbstractTokenPattern):
 			return (False, 0)
 	#
 
-	def derive(self, assignToVar = None, assignToVarTyped = None, bVarIsArray = False):
+	#
+	# Derive a new token pattern from this object, modifying some attributes in the process.
+	#
+	def derive(self, assignToVar:str = None, assignToVarTyped:str = None, bVarIsArray:bool = False):
 		assert isinstance(assignToVar, (type(None), str))
 		assert isinstance(assignToVarTyped, (type(None), str))
 		assert isinstance(bVarIsArray, bool)
@@ -470,11 +518,14 @@ class TokenPatternRepeat(AbstractTokenPattern):
 
 
 #
-# A token alternative pattern. One of the specified patterns must match.
+# A token pattern alternative pattern. One of the specified patterns must match.
 #
 class TokenPatternAlternatives(AbstractTokenPattern):
 
-	def __init__(self, tokenPatterns):
+	#
+	# @param		AbstractTokenPattern[] tokenPatterns			(required) A set of token patterns to match against.
+	#
+	def __init__(self, tokenPatterns:list):
 		super().__init__()
 
 		assert isinstance(tokenPatterns, list)
@@ -525,6 +576,9 @@ class TokenPatternAlternatives(AbstractTokenPattern):
 #
 class TokenPatternOptional(AbstractTokenPattern):
 
+	#
+	# @param		AbstractTokenPattern tokenPattern			(required) A token patterns to match against.
+	#
 	def __init__(self, tokenPattern):
 		super().__init__()
 
