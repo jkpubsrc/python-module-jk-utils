@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.2.28"
+__version__ = "0.2020.3.12"
 
 
 from .Token import Token
@@ -13,7 +13,6 @@ from .TokenPattern import TokenPattern
 from .TokenPatternAlternatives import TokenPatternAlternatives
 from .TokenPatternRepeat import TokenPatternRepeat
 from .TokenPatternSequence import TokenPatternSequence
-
 
 
 
