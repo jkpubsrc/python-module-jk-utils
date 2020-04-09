@@ -40,6 +40,18 @@ class ChModValue:
 			raise Exception("Unexected type: " + repr(type(v)))
 	#
 
+	@staticmethod
+	def create(v):
+		if isinstance(v, ChModValue):
+			return v
+		elif isinstance(v, int):
+			return ChModValue(v)
+		elif isinstance(v, str):
+			return ChModValue(v)
+		else:
+			raise Exception("Unexpected value: " + repr(v))
+	#
+
 	def cloneObject(self):
 		return ChModValue(self.toInt())
 	#
