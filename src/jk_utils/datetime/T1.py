@@ -108,6 +108,7 @@ class T1(object):
 		ret = T1()
 		ret._hour = dt.hour
 		ret._minute = dt.minute
+		ret._absoluteTick = ret._hour * 60 + ret._minute
 		return ret
 	#
 
