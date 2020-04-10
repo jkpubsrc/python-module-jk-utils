@@ -196,11 +196,40 @@ class D(object):
 	#
 
 	#
-	# Creates a D object representing the first of january of this year
+	# Creates a D object representing the first of January of this year
 	#
 	def startOfYear(self):
 		ret = D()
 		ret._dt = datetime.datetime(self.year, 1, 1)
+		return ret
+	#
+
+	#
+	# Creates a D object representing the 31st of December of this year
+	#
+	def endOfYear(self):
+		ret = D()
+		ret._dt = datetime.datetime(self.year, 12, 31)
+		return ret
+	#
+
+	def startOfMonth(self):
+		ret = D()
+		ret._dt = datetime.datetime(self.year, self.month, 1)
+		return ret
+	#
+
+	def endOfMonth(self):
+		y = self.year
+		m = self.month + 1
+		if m > 12:
+			y += 1
+			m -= 12
+		dt = datetime.datetime(y, m, 1)
+		dt = dt - datetime.timedelta(days=1)
+
+		ret = D()
+		ret._dt = dt
 		return ret
 	#
 
@@ -318,8 +347,27 @@ class D(object):
 	# ==== Static Methods
 	# ================================================================================================================================
 
+	#
+	# Returns a date object of today.
+	# This is the same as "today()`.
+	#
 	@staticmethod
 	def now():
+		ret = D()
+		dt = datetime.datetime.now()
+		y = dt.year
+		m = dt.month
+		d = dt.day
+		ret._dt = datetime.datetime(y, m, d)
+		return ret
+	#
+
+	#
+	# Returns a date object of today.
+	# This is the same as "now()`.
+	#
+	@staticmethod
+	def today():
 		ret = D()
 		dt = datetime.datetime.now()
 		y = dt.year
