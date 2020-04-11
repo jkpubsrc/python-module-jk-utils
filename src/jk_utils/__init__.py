@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.4.11"
+__version__ = "0.2020.4.11.1"
 
 
 
@@ -13,6 +13,7 @@ from . import reflection
 from . import pathutils
 from . import fsutils
 from . import rng
+from . import datatypes
 from .GracefullyHandleKeyboardInterrupt import GracefullyHandleKeyboardInterrupt
 from .DelayedKeyboardInterrupt import DelayedKeyboardInterrupt
 from .GracefullyHandleInterrupts import GracefullyHandleInterrupts
@@ -47,5 +48,4 @@ from . import processes
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
-
 
