@@ -16,8 +16,14 @@ def _fullname(o):
 
 
 
-def getTypeAsStr(value, fqn:bool = False):
+def getTypeAsStr(value, fqn:bool = False, bAllowNull:bool = True):
 	assert isinstance(fqn, bool)
+
+	if value is None:
+		if bAllowNull:
+			return "(null)"
+		else:
+			raise Exception("Value is (null)!")
 
 	if isinstance(value, bool):
 		return "bool"
@@ -38,12 +44,17 @@ def getTypeAsStr(value, fqn:bool = False):
 		firstValue = None
 		for v in value:
 			if elementType is None:
-				elementType = type(v)
-				firstValue = v
+				if v is not None:
+					elementType = type(v)
+					firstValue = v
 			else:
-				assert elementType == type(v)
+				if v is not None:
+					assert elementType == type(v)
 
-		return getTypeAsStr(v, fqn) + "[]"
+		if firstValue is None:
+			raise Exception("Only (null)s!")
+
+		return getTypeAsStr(v, fqn, False) + "[]"
 
 	if isinstance(value, dict):
 		assert len(value) > 0
@@ -52,17 +63,29 @@ def getTypeAsStr(value, fqn:bool = False):
 		firstKey = None
 		firstValue = None
 		for k in value.keys():
-			assert isinstance(k, str)
 			v = value[k]
-			if elementType is None:
+
+			if keyType is None:
+				assert k is not None
 				keyType = type(k)
 				firstKey = k
-				elementType = type(v)
-				firstValue = v
 			else:
 				assert keyType == type(k)
-				assert elementType == type(v)
-		return "dict<" + getTypeAsStr(firstKey, fqn) + "," + getTypeAsStr(firstValue, fqn) + ">"
+
+			if elementType is None:
+				if v is not None:
+					elementType = type(v)
+					firstValue = v
+			else:
+				if v is not None:
+					assert elementType == type(v)
+
+		if firstKey is None:
+			raise Exception("Only (null)s!")
+		if firstValue is None:
+			raise Exception("Only (null)s!")
+
+		return "dict<" + getTypeAsStr(firstKey, fqn, False) + "," + getTypeAsStr(firstValue, fqn, False) + ">"
 
 	if fqn:
 		s = _fullname(value)

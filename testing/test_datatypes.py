@@ -10,6 +10,11 @@ from jk_testing import Assert
 
 
 
+
+
+
+
+
 t = getTypeAsStr(123)
 print(t)
 Assert.isEqual(t, "int")
@@ -80,6 +85,10 @@ t = getTypeAsStr([ jk_utils.datetime.D.now() ])
 print(t)
 Assert.isEqual(t, "D[]")
 
+t = getTypeAsStr([ None, "January", "February", "March" ])
+print(t)
+Assert.isEqual(t, "str[]")
+
 
 
 print()
@@ -147,6 +156,10 @@ Assert.isEqual(t, "dict<str,datetime>")
 t = getTypeAsStr({ "a": jk_utils.datetime.D.now() })
 print(t)
 Assert.isEqual(t, "dict<str,D>")
+
+t = getTypeAsStr({ "x": None, "1": "January", "2": "February", "3": "March" })
+print(t)
+Assert.isEqual(t, "dict<str,str>")
 
 
 
