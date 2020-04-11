@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.4.10"
+__version__ = "0.2020.4.11"
 
 
 
@@ -47,6 +47,5 @@ from . import processes
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
-
 
 
