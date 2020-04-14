@@ -32,12 +32,12 @@ class T1(object):
 			m = re.match("^" + pattern + "$", s)
 			if m:
 				if patternType == "hms":
-					hour = m.group("hour")
-					minute = m.group("minute")
-					second = m.group("second")
+					hour = int(m.group("hour"))
+					minute = int(m.group("minute"))
+					second = int(m.group("second"))
 				elif patternType == "hm":
-					hour = m.group("hour")
-					minute = m.group("minute")
+					hour = int(m.group("hour"))
+					minute = int(m.group("minute"))
 					second = 0
 				else:
 					raise Exception()
