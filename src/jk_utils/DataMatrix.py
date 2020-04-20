@@ -4,6 +4,9 @@
 #
 # This class implements a data matrix for cells of unspecific type.
 #
+# TODO: Meanwhile we created an own package jk_datamatrix. Maybe merge this class into that package?
+#
+#
 class DataMatrix(object):
 
 	# ================================================================================================================================

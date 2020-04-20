@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.4.14.1"
+__version__ = "0.2020.4.20"
 
 
 
@@ -44,6 +44,7 @@ from . import users
 from .showCapacityProgress import *
 from .DataMatrix import DataMatrix
 from . import processes
+from .RandomStateID import RandomStateID
 
 
 # the data node implementation has been moved to an own package: jk_datanodes

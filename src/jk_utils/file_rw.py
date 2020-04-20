@@ -291,7 +291,47 @@ class openWriteJSON(object):
 
 
 
+def writePrivateBinaryFile(binaryData, filePath:str):
+	assert isinstance(filePath, str)
+	assert isinstance(binaryData, (bytes, bytearray))
 
+	try:
+		os.remove(filePath)
+	except OSError:
+		pass
+
+	umask_original = os.umask(0)
+	try:
+		fdesc = os.open(filePath, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+	finally:
+		os.umask(umask_original)
+
+	with os.fdopen(fdesc, "wb") as fout:
+		fout.write(binaryData)
+#
+
+
+
+def writePrivateJSONFile(jsonData, filePath:str, bPretty:bool = False):
+	assert isinstance(filePath, str)
+	assert isinstance(jsonData, (int, float, bool, str, list, tuple, dict))
+
+	if bPretty:
+		s = json.dumps(jsonData, indent="\t", sort_keys=True)
+	else:
+		s = json.dumps(jsonData)
+
+	writePrivateBinaryFile(s.encode("utf-8"), filePath)
+#
+
+
+
+def loadBinaryFile(filePath:str):
+	assert isinstance(filePath, str)
+
+	with open(filePath, "rb") as fin:
+		return fin.read()
+#
 
 
 
