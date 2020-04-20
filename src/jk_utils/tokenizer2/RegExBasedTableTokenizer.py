@@ -58,9 +58,16 @@ class RegExBasedTokenizingTable(object):
 
 		self.__stateName = stateName
 
+		self.__tokenPseudoTypeToTokenTypeMap = {
+			"NEWLINE": "NEWLINE",
+			"SPACE": "SPACE",
+			"ERROR": "ERROR",
+		}
+
 		self.__pattern2StateMap = {}
 		self.__tokenParsingDelegatesMap = {}
 		rawPatternsList = []
+		n = 1
 		for patternDef in patternDefs:
 			assert isinstance(patternDef, (tuple, list))
 
@@ -72,17 +79,21 @@ class RegExBasedTokenizingTable(object):
 				tokenType, patternPre, pattern, patternPost, nextState, parsingDelegate = patternDef
 			else:
 				raise Exception("Invalid pattern definition: " + str(patternDef))
+			tokenPseudoType = tokenType + "_" + str(n)
+			self.__tokenPseudoTypeToTokenTypeMap[tokenPseudoType] = tokenType
 
 			p2 = []
 			if patternPre:
 				p2.extend(("(?:", patternPre, ")"))
-			p2.extend(("(?P<", tokenType, ">", pattern, ")"))
+			p2.extend(("(?P<", tokenPseudoType, ">", pattern, ")"))
 			if patternPost:
 				p2.extend(("(?:", patternPost, ")"))
 
 			rawPatternsList.append("".join(p2)),
-			self.__pattern2StateMap[tokenType] = nextState
-			self.__tokenParsingDelegatesMap[tokenType] = parsingDelegate
+			self.__pattern2StateMap[tokenPseudoType] = nextState
+			self.__tokenParsingDelegatesMap[tokenPseudoType] = parsingDelegate
+
+			n += 1
 
 		self.__compiledPatterns = None
 
@@ -126,8 +137,9 @@ class RegExBasedTokenizingTable(object):
 		if (not mo) or (state.pos != mo.start()):
 			raise RuntimeError("Syntay error encountered at " + str(state.lineNo) + ":" + str(columnNo) + "!")
 
-		tokenType = mo.lastgroup
-		value = mo.group(tokenType)
+		tokenPseudoType = mo.lastgroup
+		value = mo.group(tokenPseudoType)
+		tokenType = self.__tokenPseudoTypeToTokenTypeMap[tokenPseudoType]
 		if tokenType == "NEWLINE":
 			ret = Token(tokenType, value, state.lineNo, columnNo, mo.end() - state.pos)
 			state.line_start = mo.end()
@@ -137,13 +149,13 @@ class RegExBasedTokenizingTable(object):
 		elif tokenType == "ERROR":
 			raise RuntimeError("Parse error encountered at " + str(state.lineNo) + ":" + str(columnNo) + "!")
 		else:
-			d = self.__tokenParsingDelegatesMap.get(tokenType)
+			d = self.__tokenParsingDelegatesMap.get(tokenPseudoType)
 			if d != None:
 				value = d(value)
 			ret = Token(tokenType, value, state.lineNo, columnNo, mo.end() - state.pos)
 
 		#print(">>EMITTING:", ret)
-		nextState = self.__pattern2StateMap.get(tokenType)
+		nextState = self.__pattern2StateMap.get(tokenPseudoType)
 		if nextState:
 			#print(">>SWITCHING FROM STATE", repr(state.currentState), "TO STATE", repr(nextState))
 			state.currentState = nextState
@@ -212,7 +224,9 @@ class RegExBasedTableTokenizer(object):
 		while state.pos < maxPos:
 			currentTable = self.__tokenizationTableMap[state.currentState]
 			t = currentTable._getNextToken(state, text)
-			if t.type == "NEWLINE":
+			if t.type.startswith("__"):
+				continue
+			elif t.type == "NEWLINE":
 				if bEmitNewLines:
 					yield t
 			elif t.type == "SPACE":

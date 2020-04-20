@@ -325,6 +325,49 @@ class D(object):
 		return d
 	#
 
+	def addMonths(self, m:int):
+		assert isinstance(m, int)
+
+		yy = self.year
+		mm = self.month
+		dd = self.day
+
+		if m > 0:
+			mm += m % 12
+			yy += m // 12
+		else:
+			m = -m
+			mm -= m % 12
+			yy -= m // 12
+			if mm < 1:
+				yy -= 1
+				mm += 12
+		
+		return D.createFrom(yearMonthDayTuple=(yy, mm, dd))
+	#
+
+	def subtractMonths(self, m:int):
+		assert isinstance(m, int)
+
+		return self.addMonths(-m)
+	#
+
+	def addYears(self, y:int):
+		assert isinstance(y, int)
+
+		yy = self.year + y
+		mm = self.month
+		dd = self.day
+
+		return D.createFrom(yearMonthDayTuple=(yy, mm, dd))
+	#
+
+	def subtractYears(self, y:int):
+		assert isinstance(y, int)
+
+		return self.addYears(-y)
+	#
+
 	def clone(self):
 		ret = D()
 		ret._dt = self._dt

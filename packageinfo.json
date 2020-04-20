@@ -36,6 +36,7 @@
 		"packages": [
 			"jk_utils",
 			"jk_utils.async",
+			"jk_utils.color",
 			"jk_utils.datetime",
 			"jk_utils.tokenizer2"
 		],
