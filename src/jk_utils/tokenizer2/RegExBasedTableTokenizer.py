@@ -147,12 +147,15 @@ class RegExBasedTokenizingTable(object):
 		elif tokenType == "SPACE":
 			ret = Token(tokenType, value, state.lineNo, columnNo, mo.end() - state.pos)
 		elif tokenType == "ERROR":
-			raise RuntimeError("Parse error encountered at " + str(state.lineNo) + ":" + str(columnNo) + "!")
+			raise RuntimeError("Tokenization error encountered at " + str(state.lineNo) + ":" + str(columnNo) + "!")
 		else:
 			d = self.__tokenParsingDelegatesMap.get(tokenPseudoType)
 			if d != None:
 				value = d(value)
 			ret = Token(tokenType, value, state.lineNo, columnNo, mo.end() - state.pos)
+			if tokenType == 'newline':
+				state.line_start = mo.end()
+				state.lineNo += 1
 
 		#print(">>EMITTING:", ret)
 		nextState = self.__pattern2StateMap.get(tokenPseudoType)

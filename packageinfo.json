@@ -1,7 +1,7 @@
 {
 	"language": "python3",
 	"name": "jk_utils",
-	"version": "0.2020.4.20",
+	"version": "0.2020.5.14",
 	"meta": {
 		"description": "This python module provides various utility functions and classes.",
 		"keywords": [

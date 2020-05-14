@@ -83,6 +83,72 @@ class openReadText(object):
 
 #
 
+class openReadJSON(object):
+
+	class _BinaryWrapper(object):
+
+		def __init__(self, f):
+			self.__f = f
+		#
+
+		def read(self, length = None):
+			data = self.__f.read()
+			return data.decode("utf-8")
+		#
+
+		def close(self):
+			self.__f.close()
+		#
+
+	#
+
+	class _JSONWrapper(object):
+
+		def __init__(self, f):
+			self.__f = f
+		#
+
+		def read(self):
+			data = self.__f.read()
+			return json.loads(data)
+		#
+
+		def close(self):
+			self.__f.close()
+		#
+
+	#
+
+	def __init__(self, filePath):
+		self.__filePath = filePath
+		if filePath.endswith(".gz") or filePath.endswith(".gzip"):
+			self.__open = gzip.open
+			self.__bToText = True
+		elif filePath.endswith(".bz2") or filePath.endswith(".bzip2"):
+			self.__open = bz2.open
+			self.__bToText = True
+		elif filePath.endswith(".lzma"):
+			self.__open = lzma.open
+			self.__bToText = True
+		else:
+			self.__open = open
+			self.__bToText = False
+	#
+
+	def __enter__(self):
+		if self.__bToText:
+			self.__f = openReadJSON._JSONWrapper(openReadJSON._BinaryWrapper(self.__open(self.__filePath, "rb")))
+		else:
+			self.__f = openReadJSON._JSONWrapper(self.__open(self.__filePath, "r"))
+		return self.__f
+	#
+
+	def __exit__(self, *args):
+		self.__f.close()
+	#
+
+#
+
 
 
 
@@ -273,7 +339,7 @@ class openWriteJSON(object):
 				self.__f = openWriteJSON._BinaryWrapper(self.__open(self.__filePath, "wb"))
 			else:
 				self.__f = self.__open(self.__filePath, "w")
-		self.__f = openWriteText._JSONWrapper(self.__f, self.__bPretty)
+		self.__f = openWriteJSON._JSONWrapper(self.__f, self.__bPretty)
 		return self.__f
 	#
 

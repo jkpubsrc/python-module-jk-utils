@@ -47,15 +47,21 @@ class AbstractTokenPattern(object):
 
 			for (entryType, a, b, c) in stack:
 
-				if (entryType == "v") or (entryType == "vv"):
+				if (entryType == "v") or (entryType == "vv") or (entryType == "d"):
 
 					# there is a value to store.
 
 					# step 1: get the data to store
-					token, varName, bVarIsArray = a, b, c
-					if entryType == "v":
+					if entryType == "d":
+						# pure data
+						value, varName, bVarIsArray = a, b, c
+					elif entryType == "v":
+						# take value as is
+						token, varName, bVarIsArray = a, b, c
 						value = token.value
 					else:
+						# add typed value
+						token, varName, bVarIsArray = a, b, c
 						value = TypedValue(token.type, token.value)
 
 					# step 2: actually store the value

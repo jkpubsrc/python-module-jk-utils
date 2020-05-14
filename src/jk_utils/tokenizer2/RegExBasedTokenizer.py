@@ -157,7 +157,7 @@ class RegExBasedTokenizer(object):
 				if bEmitWhiteSpaces:
 					yield Token(tokenType, value, lineNo, columnNo)
 			elif tokenType == 'ERROR':
-				raise RuntimeError("Parse error encountered at " + str(lineNo) + ":" + str(columnNo) + "!")
+				raise RuntimeError("Tokenization error encountered at " + str(lineNo) + ":" + str(columnNo) + "!")
 			else:
 				d = self.__typeParsingDelegates.get(tokenType, None)
 				if d != None:
@@ -172,6 +172,9 @@ class RegExBasedTokenizer(object):
 				if pos >= 0:
 					tokenType = tokenType[0:pos]
 				yield Token(tokenType, value, lineNo, columnNo)
+				if tokenType == 'newline':
+					line_start = mo.end()
+					lineNo += 1
 	#
 
 
