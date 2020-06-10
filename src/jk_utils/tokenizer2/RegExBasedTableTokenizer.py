@@ -6,7 +6,7 @@ import collections
 import typing
 
 from .Token import Token
-
+from .TokenizationError import TokenizationError
 
 
 
@@ -49,7 +49,7 @@ class RegExBasedTokenizingTable(object):
 	#											* (optional) str: next state
 	#											* (optional) callable: parsing delegate
 	#
-	def __init__(self, stateName:str, patternDefs):
+	def __init__(self, stateName:str, patternDefs, bDebug:bool = False):
 		assert isinstance(stateName, str)
 		assert stateName
 
@@ -67,6 +67,7 @@ class RegExBasedTokenizingTable(object):
 		self.__pattern2StateMap = {}
 		self.__tokenParsingDelegatesMap = {}
 		rawPatternsList = []
+		rawPatternsSources = []
 		n = 1
 		for patternDef in patternDefs:
 			assert isinstance(patternDef, (tuple, list))
@@ -90,6 +91,7 @@ class RegExBasedTokenizingTable(object):
 				p2.extend(("(?:", patternPost, ")"))
 
 			rawPatternsList.append("".join(p2)),
+			rawPatternsSources.append(tokenType)
 			self.__pattern2StateMap[tokenPseudoType] = nextState
 			self.__tokenParsingDelegatesMap[tokenPseudoType] = parsingDelegate
 
@@ -97,12 +99,19 @@ class RegExBasedTokenizingTable(object):
 
 		self.__compiledPatterns = None
 
+		if bDebug:
+			print("Compiling regular expressions for " + self.__class__.__name__ + " state " + repr(stateName) + ":")
+			for tt, r in zip(rawPatternsSources, rawPatternsList):
+				print("\t" + repr(tt) + "\t\t=>  " + repr(r))
+
 		rawPatterns = "|".join(rawPatternsList)
 		rawPatterns += "|(?P<NEWLINE>\n)"
 		rawPatterns += "|(?P<SPACE>[\t ]+)"
 		rawPatterns += "|(?P<ERROR>.)"
 		try:
 			self.__compiledPatterns = re.compile(rawPatterns)
+			if bDebug:
+				print("\tPATTERN: " + rawPatterns)
 		except Exception as e:
 			print("==== COMPILE ERROR")
 			print("==== " + e.msg)
@@ -134,8 +143,10 @@ class RegExBasedTokenizingTable(object):
 	def _getNextToken(self, state:_TokenizationState, text:str) -> tuple:
 		mo = self.__compiledPatterns.match(text, state.pos)
 		columnNo = state.pos - state.line_start + 1
-		if (not mo) or (state.pos != mo.start()):
-			raise RuntimeError("Syntay error encountered at " + str(state.lineNo) + ":" + str(columnNo) + "!")
+		if not mo:
+			raise TokenizationError("No RegEx match", state.lineNo, columnNo, state.currentState)
+		if state.pos != mo.start():
+			raise TokenizationError("Invalid RegEx match pos", state.lineNo, columnNo, state.currentState)
 
 		tokenPseudoType = mo.lastgroup
 		value = mo.group(tokenPseudoType)
@@ -147,7 +158,7 @@ class RegExBasedTokenizingTable(object):
 		elif tokenType == "SPACE":
 			ret = Token(tokenType, value, state.lineNo, columnNo, mo.end() - state.pos)
 		elif tokenType == "ERROR":
-			raise RuntimeError("Tokenization error encountered at " + str(state.lineNo) + ":" + str(columnNo) + "!")
+			raise TokenizationError("Error match", state.lineNo, columnNo, state.currentState)
 		else:
 			d = self.__tokenParsingDelegatesMap.get(tokenPseudoType)
 			if d != None:

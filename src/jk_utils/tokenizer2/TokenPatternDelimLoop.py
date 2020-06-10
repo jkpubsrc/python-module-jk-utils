@@ -20,14 +20,14 @@ class TokenPatternDelimLoop(AbstractTokenPattern):
 	#
 	# @param		AbstractTokenPattern tokenPattern			(required) A token pattern to match one or more times.
 	#
-	def __init__(self, tokenPattern:AbstractTokenPattern, delimÜattern:AbstractTokenPattern):
+	def __init__(self, tokenPattern:AbstractTokenPattern, delimPattern:AbstractTokenPattern):
 		super().__init__()
 
 		assert isinstance(tokenPattern, AbstractTokenPattern)
 		self.__tokenPattern = tokenPattern
 
-		assert isinstance(delimÜattern, AbstractTokenPattern)
-		self.__delimPattern = delimÜattern
+		assert isinstance(delimPattern, AbstractTokenPattern)
+		self.__delimPattern = delimPattern
 	#
 
 	def _tryMatch(self, tokens, pos, stack):
@@ -40,7 +40,7 @@ class TokenPatternDelimLoop(AbstractTokenPattern):
 		(bResult, n) = self.__tokenPattern._tryMatch(tokens, pos, stack)
 		if not bResult:
 			return (False, 0)
-			pos += n
+		pos += n
 
 		lastGoodPos = pos
 		nCountLoops = 1
@@ -52,13 +52,13 @@ class TokenPatternDelimLoop(AbstractTokenPattern):
 			pos += n
 
 			(bResult, n) = self.__tokenPattern._tryMatch(tokens, pos, stack)
-
 			if not bResult:
 				pos = lastGoodPos
 				break
 			pos += n
 
 			nCountLoops += 1
+			lastGoodPos = pos
 
 		self._addTagsToStack(stack)
 		return (True, pos - orgPos)
