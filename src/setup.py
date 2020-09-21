@@ -45,7 +45,7 @@ setup(
 		"jk_utils.tokenizer2",
 	],
 	url = "https://github.com/jkpubsrc/python-module-jk-utils",
-	version = "0.2020.5.14",
+	version = "0.2020.9.21",
 	zip_safe = False,
 	long_description = readme(),
 	long_description_content_type="text/markdown",
