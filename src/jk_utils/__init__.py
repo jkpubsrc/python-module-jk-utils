@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.10.8"
+__version__ = "0.2020.10.10"
 
 
 
@@ -45,6 +45,7 @@ from .showCapacityProgress import *
 from .DataMatrix import DataMatrix
 from . import processes
 from .RandomStateID import RandomStateID
+from .TextOutputBuffer import TextOutputBuffer
 
 
 # the data node implementation has been moved to an own package: jk_datanodes
