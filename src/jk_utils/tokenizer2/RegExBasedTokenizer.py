@@ -19,7 +19,7 @@ class RegExBasedTokenizer(object):
 	#
 	# Initialization method
 	#
-	# @param		str[] patternDefs		A list of pattern definitions. Each pattern definition should be a tuple or list of one of the following stcutrues:
+	# @param		str[] patternDefs		A list of pattern definitions. Each pattern definition should be a tuple or list of one of the following structures:
 	#										* 2 items
 	#											* (required) the token type to use on match
 	#											* (required) the pattern to match

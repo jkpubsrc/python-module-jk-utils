@@ -35,7 +35,7 @@ class RegExBasedTokenizingTable(object):
 	#
 	# Initialization method
 	#
-	# @param		object[] patternDefs	A list of pattern definitions. Each pattern definition should be a tuple or list of one of the following stcutrues:
+	# @param		object[] patternDefs	A list of pattern definitions. Each pattern definition should be a tuple or list of one of the following structures:
 	#										* 4 items
 	#											* (required) str: the token type to use on match
 	#											* (required) str: the pattern to match
