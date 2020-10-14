@@ -42,16 +42,48 @@ def findMountPoint(path:str):
     return path
 #
 
-def getFolderSize(dirPath:str):
-    total_size = os.path.getsize(dirPath)
-    for item in os.listdir(dirPath):
-        itempath = os.path.join(dirPath, item)
-        if os.path.isfile(itempath):
-            total_size += os.path.getsize(itempath)
-        elif os.path.isdir(itempath):
-            total_size += getFolderSize(itempath)
-    return total_size
+
+
+def _getFolderSize_exact(dirPath:str):
+	nBytes = os.path.getsize(dirPath)
+	for item in os.listdir(dirPath):
+		itempath = os.path.join(dirPath, item)
+		if os.path.isfile(itempath):
+			nBytes += os.path.getsize(itempath)
+		elif os.path.isdir(itempath):
+			nBytes += _getFolderSize_exact(itempath)
+	return nBytes
 #
+
+def _getFolderSize_block(dirPath:str, blockSize:int):
+	nBlocks = (os.path.getsize(dirPath) + blockSize - 1) // blockSize
+	for item in os.listdir(dirPath):
+		itempath = os.path.join(dirPath, item)
+		if os.path.isfile(itempath):
+			nBlocks += (os.path.getsize(itempath) + blockSize - 1) // blockSize
+		elif os.path.isdir(itempath):
+			nBlocks += _getFolderSize_block(itempath, blockSize)
+	return nBlocks
+#
+
+#
+# Recursively get the size of the specified folder in bytes.
+#
+def getFolderSize(dirPath:str, mode:str = "block"):
+	assert isinstance(dirPath, str)
+	assert os.path.isdir(dirPath)
+
+	assert isinstance(mode, str)
+	assert mode in [ "exact", "block" ]
+
+	if mode == "exact":
+		return _getFolderSize_exact(dirPath)
+	else:
+		blockSize = os.stat(dirPath).st_blksize
+		return _getFolderSize_block(dirPath, blockSize) * blockSize
+#
+
+
 
 
 
