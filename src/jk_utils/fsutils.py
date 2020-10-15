@@ -1,7 +1,16 @@
 
 
 import os
+import stat
 import collections
+
+
+
+
+
+
+
+
 
 
 FileSystemStats = collections.namedtuple("FileSystemStats", [
@@ -44,43 +53,95 @@ def findMountPoint(path:str):
 
 
 
-def _getFolderSize_exact(dirPath:str):
-	nBytes = os.path.getsize(dirPath)
-	for item in os.listdir(dirPath):
-		itempath = os.path.join(dirPath, item)
-		if os.path.isfile(itempath):
-			nBytes += os.path.getsize(itempath)
-		elif os.path.isdir(itempath):
-			nBytes += _getFolderSize_exact(itempath)
-	return nBytes
-#
-
-def _getFolderSize_block(dirPath:str, blockSize:int):
-	nBlocks = (os.path.getsize(dirPath) + blockSize - 1) // blockSize
-	for item in os.listdir(dirPath):
-		itempath = os.path.join(dirPath, item)
-		if os.path.isfile(itempath):
-			nBlocks += (os.path.getsize(itempath) + blockSize - 1) // blockSize
-		elif os.path.isdir(itempath):
-			nBlocks += _getFolderSize_block(itempath, blockSize)
-	return nBlocks
-#
-
 #
 # Recursively get the size of the specified folder in bytes.
 #
-def getFolderSize(dirPath:str, mode:str = "block"):
+# @param		str dirPath		(required) The directory to recursively get the size from
+# @param		str mode		(optional) Either "exact" or "block" (default) to either sum up the exact file sizes
+#								or to sum up the size the files occupy on disk.
+# @return		int totalSize	Returns the total size of all files.
+#
+def __old_getFolderSize(dirPath:str, mode:str = "block") -> int:
 	assert isinstance(dirPath, str)
 	assert os.path.isdir(dirPath)
 
 	assert isinstance(mode, str)
 	assert mode in [ "exact", "block" ]
 
+	def _getFolderSize_exact(dirPath:str) -> int:
+		nBytes = os.path.getsize(dirPath)
+		for item in os.listdir(dirPath):
+			itempath = os.path.join(dirPath, item)
+			if os.path.isfile(itempath):
+				nBytes += os.path.getsize(itempath)
+			elif os.path.isdir(itempath):
+				nBytes += _getFolderSize_exact(itempath)
+		return nBytes
+	#
+
+	def _getFolderSize_block(dirPath:str, blockSize:int) -> int:
+		nBlocks = (os.path.getsize(dirPath) + blockSize - 1) // blockSize
+		for item in os.listdir(dirPath):
+			itempath = os.path.join(dirPath, item)
+			if os.path.isfile(itempath):
+				nBlocks += (os.path.getsize(itempath) + blockSize - 1) // blockSize
+			elif os.path.isdir(itempath):
+				nBlocks += _getFolderSize_block(itempath, blockSize)
+		return nBlocks
+	#
+
 	if mode == "exact":
 		return _getFolderSize_exact(dirPath)
 	else:
 		blockSize = os.stat(dirPath).st_blksize
+		nBytes = (os.path.getsize(dirPath) + blockSize - 1) // blockSize
 		return _getFolderSize_block(dirPath, blockSize) * blockSize
+#
+
+
+
+#
+# Recursively get the size of the specified folder in bytes.
+#
+# @param		str dirPath		(required) The directory to recursively get the size from
+# @param		str mode		(optional) Either "exact" or "block" (default) to either sum up the exact file sizes
+#								or to sum up the size the files occupy on disk.
+# @return		int totalSize	Returns the total size of all files.
+#
+def getFolderSize(dirPath:str, mode:str = "block") -> int:
+	assert isinstance(dirPath, str)
+	assert os.path.isdir(dirPath)
+
+	assert isinstance(mode, str)
+	assert mode in [ "exact", "block" ]
+
+	def _getFolderSize_exact(dirPath:str) -> int:
+		nBytes = 0
+		for fe in os.scandir(dirPath):
+			_stat = fe.stat(follow_symlinks = False)
+			nBytes += _stat.st_size
+			if stat.S_ISDIR(_stat.st_mode):
+				nBytes += _getFolderSize_exact(fe.path)
+		return nBytes
+	#
+
+	def _getFolderSize_block(dirPath:str, blockSize:int) -> int:
+		nBytes = 0
+		for fe in os.scandir(dirPath):
+			_stat = fe.stat(follow_symlinks = False)
+			nBytes += (_stat.st_size + blockSize - 1) // blockSize
+			if stat.S_ISDIR(_stat.st_mode):
+				nBytes += _getFolderSize_exact(fe.path)
+		return nBytes
+	#
+
+	if mode == "exact":
+		nBytes = os.path.getsize(dirPath)
+		return nBytes + _getFolderSize_exact(dirPath)
+	else:
+		blockSize = os.stat(dirPath).st_blksize
+		nBytes = (os.path.getsize(dirPath) + blockSize - 1) // blockSize
+		return nBytes + _getFolderSize_block(dirPath, blockSize) * blockSize
 #
 
 
