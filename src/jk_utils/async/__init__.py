@@ -1,11 +1,10 @@
 ﻿
 
 
-__version__ = "0.2020.10.15"
+__version__ = "0.2020.10.15.1"
 
 
 
 from .queues import *
 from .TabularWriterMediaWiki import *
 from .TabularWriterSTDOUT import *
-
