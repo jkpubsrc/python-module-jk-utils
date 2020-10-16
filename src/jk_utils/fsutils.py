@@ -126,13 +126,13 @@ def getFolderSize(dirPath:str, mode:str = "block") -> int:
 	#
 
 	def _getFolderSize_block(dirPath:str, blockSize:int) -> int:
-		nBytes = 0
+		nBlocks = 0
 		for fe in os.scandir(dirPath):
 			_stat = fe.stat(follow_symlinks = False)
-			nBytes += (_stat.st_size + blockSize - 1) // blockSize
+			nBlocks += ((_stat.st_size + blockSize - 1) // blockSize)
 			if stat.S_ISDIR(_stat.st_mode):
-				nBytes += _getFolderSize_exact(fe.path)
-		return nBytes
+				nBlocks += _getFolderSize_block(fe.path, blockSize)
+		return nBlocks
 	#
 
 	if mode == "exact":
@@ -140,7 +140,7 @@ def getFolderSize(dirPath:str, mode:str = "block") -> int:
 		return nBytes + _getFolderSize_exact(dirPath)
 	else:
 		blockSize = os.stat(dirPath).st_blksize
-		nBytes = (os.path.getsize(dirPath) + blockSize - 1) // blockSize
+		nBytes = ((os.path.getsize(dirPath) + blockSize - 1) // blockSize) * blockSize
 		return nBytes + _getFolderSize_block(dirPath, blockSize) * blockSize
 #
 

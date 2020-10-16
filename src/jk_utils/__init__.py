@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.10.15.1"
+__version__ = "0.2020.10.16"
 
 
 
@@ -51,7 +51,6 @@ from .VolatileValue import VolatileValue
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
-
 
 
 
