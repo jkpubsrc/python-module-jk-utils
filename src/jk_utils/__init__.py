@@ -1,9 +1,10 @@
 ﻿
 
-__version__ = "0.2020.10.16"
+__version__ = "0.2020.10.20"
 
 
 
+from .PIDFile import writeProcessPIDFile
 from . import file_rw
 from . import mac
 from . import ip
@@ -51,7 +52,6 @@ from .VolatileValue import VolatileValue
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
-
 
 
 
