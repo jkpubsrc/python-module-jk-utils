@@ -4,9 +4,7 @@ import typing
 
 
 
-def allItemsHaveEqualLength(listOfSequences, expectedLength:int) -> bool:
-	assert isinstance(expectedLength, int)
-
+def allItemsHaveEqualLength(listOfSequences) -> bool:
 	it = iter(listOfSequences)
 	firstLength = len(next(it))
 	if not all( len(item) == firstLength for item in it ):
@@ -14,9 +12,7 @@ def allItemsHaveEqualLength(listOfSequences, expectedLength:int) -> bool:
 	return True
 #
 
-def allItemsHaveEqualLengthE(listOfSequences, expectedLength:int) -> int:
-	assert isinstance(expectedLength, int)
-
+def allItemsHaveEqualLengthE(listOfSequences) -> int:
 	it = iter(listOfSequences)
 	firstLength = len(next(it))
 	if not all( len(item) == firstLength for item in it ):
