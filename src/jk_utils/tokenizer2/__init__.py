@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.10.30"
+__version__ = "0.2020.11.1"
 
 
 from .Token import Token
