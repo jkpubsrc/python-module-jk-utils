@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.11.1"
+__version__ = "0.2020.11.2"
 
 
 
@@ -12,6 +12,7 @@ from . import check
 from . import mac
 from . import ip
 from . import ping
+from . import re
 from . import hex
 from . import reflection
 from . import pathutils

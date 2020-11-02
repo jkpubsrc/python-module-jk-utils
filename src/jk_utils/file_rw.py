@@ -17,7 +17,7 @@ class openReadBinary(object):
 			self.__open = gzip.open
 		elif filePath.endswith(".bz2") or filePath.endswith(".bzip2"):
 			self.__open = bz2.open
-		elif filePath.endswith(".lzma"):
+		elif filePath.endswith(".lzma") or filePath.endswith(".xz"):
 			self.__open = lzma.open
 		else:
 			self.__open = open
@@ -61,7 +61,7 @@ class openReadText(object):
 		elif filePath.endswith(".bz2") or filePath.endswith(".bzip2"):
 			self.__open = bz2.open
 			self.__bToText = True
-		elif filePath.endswith(".lzma"):
+		elif filePath.endswith(".lzma") or filePath.endswith(".xz"):
 			self.__open = lzma.open
 			self.__bToText = True
 		else:
@@ -127,7 +127,7 @@ class openReadJSON(object):
 		elif filePath.endswith(".bz2") or filePath.endswith(".bzip2"):
 			self.__open = bz2.open
 			self.__bToText = True
-		elif filePath.endswith(".lzma"):
+		elif filePath.endswith(".lzma") or filePath.endswith(".xz"):
 			self.__open = lzma.open
 			self.__bToText = True
 		else:
@@ -161,12 +161,17 @@ class openWriteBinary(object):
 		if self.__bSafeWrite:
 			self.__filePathTmp = filePath + ".tmp"
 
+		self.__format = None
 		if compression:
 			if (compression == "gzip") or (compression == "gz"):
 				self.__open = gzip.open
 			elif (compression == "bz2") or (compression == "bzip2"):
 				self.__open = bz2.open
 			elif compression == "lzma":
+				self.__format = lzma.FORMAT_ALONE
+				self.__open = lzma.open
+			elif compression == "xz":
+				self.__format = lzma.FORMAT_XZ
 				self.__open = lzma.open
 			else:
 				raise Exception("Unknown compressor: " + compression)
@@ -176,9 +181,15 @@ class openWriteBinary(object):
 
 	def __enter__(self):
 		if self.__bSafeWrite:
-			self.__f = self.__open(self.__filePathTmp, "wb")
+			if self.__format:
+				self.__f = self.__open(self.__filePathTmp, "wb", format=self.__format)
+			else:
+				self.__f = self.__open(self.__filePathTmp, "wb")
 		else:
-			self.__f = self.__open(self.__filePath, "wb")
+			if self.__format:
+				self.__f = self.__open(self.__filePath, "wb", format=self.__format)
+			else:
+				self.__f = self.__open(self.__filePath, "wb")
 		return self.__f
 	#
 
@@ -222,6 +233,7 @@ class openWriteText(object):
 			self.__filePathTmp = filePath + ".tmp"
 		self.__bToBinary = False
 
+		self.__format = None
 		if compression:
 			if (compression == "gzip") or (compression == "gz"):
 				self.__open = gzip.open
@@ -230,6 +242,11 @@ class openWriteText(object):
 				self.__open = bz2.open
 				self.__bToBinary = True
 			elif compression == "lzma":
+				self.__format = lzma.FORMAT_ALONE
+				self.__open = lzma.open
+				self.__bToBinary = True
+			elif compression == "xz":
+				self.__format = lzma.FORMAT_XZ
 				self.__open = lzma.open
 				self.__bToBinary = True
 			else:
@@ -241,14 +258,26 @@ class openWriteText(object):
 	def __enter__(self):
 		if self.__bSafeWrite:
 			if self.__bToBinary:
-				self.__f = openWriteText._BinaryWrapper(self.__open(self.__filePathTmp, "wb"))
+				if self.__format:
+					self.__f = openWriteText._BinaryWrapper(self.__open(self.__filePathTmp, "wb", format=self.__format))
+				else:
+					self.__f = openWriteText._BinaryWrapper(self.__open(self.__filePathTmp, "wb"))
 			else:
-				self.__f = self.__open(self.__filePathTmp, "w")
+				if self.__format:
+					self.__f = self.__open(self.__filePathTmp, "w", format=self.__format)
+				else:
+					self.__f = self.__open(self.__filePathTmp, "w")
 		else:
 			if self.__bToBinary:
-				self.__f = openWriteText._BinaryWrapper(self.__open(self.__filePath, "wb"))
+				if self.__format:
+					self.__f = openWriteText._BinaryWrapper(self.__open(self.__filePath, "wb", format=self.__format))
+				else:
+					self.__f = openWriteText._BinaryWrapper(self.__open(self.__filePath, "wb"))
 			else:
-				self.__f = self.__open(self.__filePath, "w")
+				if self.__format:
+					self.__f = self.__open(self.__filePath, "w", format=self.__format)
+				else:
+					self.__f = self.__open(self.__filePath, "w")
 		return self.__f
 	#
 
@@ -312,6 +341,7 @@ class openWriteJSON(object):
 		self.__bToBinary = False
 		self.__bPretty = bPretty
 
+		self.__format = None
 		if compression:
 			if (compression == "gzip") or (compression == "gz"):
 				self.__open = gzip.open
@@ -320,6 +350,11 @@ class openWriteJSON(object):
 				self.__open = bz2.open
 				self.__bToBinary = True
 			elif compression == "lzma":
+				self.__format = lzma.FORMAT_ALONE
+				self.__open = lzma.open
+				self.__bToBinary = True
+			elif compression == "xz":
+				self.__format = lzma.FORMAT_XZ
 				self.__open = lzma.open
 				self.__bToBinary = True
 			else:
@@ -331,14 +366,26 @@ class openWriteJSON(object):
 	def __enter__(self):
 		if self.__bSafeWrite:
 			if self.__bToBinary:
-				self.__f = openWriteJSON._BinaryWrapper(self.__open(self.__filePathTmp, "wb"))
+				if self.__format:
+					self.__f = openWriteJSON._BinaryWrapper(self.__open(self.__filePathTmp, "wb", format=self.__format))
+				else:
+					self.__f = openWriteJSON._BinaryWrapper(self.__open(self.__filePathTmp, "wb"))
 			else:
-				self.__f = self.__open(self.__filePathTmp, "w")
+				if self.__format:
+					self.__f = self.__open(self.__filePathTmp, "w", format=self.__format)
+				else:
+					self.__f = self.__open(self.__filePathTmp, "w")
 		else:
 			if self.__bToBinary:
-				self.__f = openWriteJSON._BinaryWrapper(self.__open(self.__filePath, "wb"))
+				if self.__format:
+					self.__f = openWriteJSON._BinaryWrapper(self.__open(self.__filePath, "wb", format=self.__format))
+				else:
+					self.__f = openWriteJSON._BinaryWrapper(self.__open(self.__filePath, "wb"))
 			else:
-				self.__f = self.__open(self.__filePath, "w")
+				if self.__format:
+					self.__f = self.__open(self.__filePath, "w", format=self.__format)
+				else:
+					self.__f = self.__open(self.__filePath, "w")
 		self.__f = openWriteJSON._JSONWrapper(self.__f, self.__bPretty)
 		return self.__f
 	#
