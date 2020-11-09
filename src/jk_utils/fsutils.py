@@ -39,16 +39,30 @@ def getFileSystemStats(mountPointPath):
 #
 
 def findMountPoint(path:str):
-    path = os.path.abspath(path)
-    orig_dev = os.stat(path).st_dev
+	path = os.path.abspath(path)
+	orig_dev = os.stat(path).st_dev
 
-    while path != '/':
-        pdir = os.path.dirname(path)
-        if os.stat(pdir).st_dev != orig_dev:
-            # we crossed the device border
-            break
-        path = pdir
-    return path
+	while path != '/':
+		pdir = os.path.dirname(path)
+		if os.stat(pdir).st_dev != orig_dev:
+			# we crossed the device border
+			break
+		path = pdir
+	return path
+#
+
+
+
+def isDirEmpty(path:str):
+	path = os.path.abspath(path)
+	if os.path.isdir(path):
+		entries = os.listdir(path)
+		if entries:
+			return False
+		else:
+			return True
+	else:
+		raise Exception("Not a directory: " + path)
 #
 
 
