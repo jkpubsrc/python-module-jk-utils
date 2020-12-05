@@ -240,7 +240,7 @@ def pingSingleHost(destinationAddress, timeout):
 #												and the ping delays in seconds as the second element. This second element is <c>None</c> if the
 #												destination host did not reply.
 #
-def pingMultipleHosts(destinationAddresses, timeout, orderByIPAddr = False):
+def pingMultipleHosts(destinationAddresses, timeout:int, orderByIPAddr:bool = False):
 	if os.geteuid() != 0:
 		raise Exception("Pings can only be sent as root!")
 
