@@ -2,6 +2,7 @@
 
 
 import os
+import re
 import sys
 import netifaces
 
@@ -9,25 +10,45 @@ import netifaces
 
 
 
+
 #
-# Retrieve all IP addresses from all active network adapters (excluding local host)
+# Retrieve all interface name, IP address, MAC address triplets from all active network adapters (excluding loopback and docker)
 #
-def getIPs():
+def getIPsEx():
 	ret = []
-	for i in netifaces.interfaces():
-		addrs = netifaces.ifaddresses(i)
+
+	for ifaceName in netifaces.interfaces():
+		if ifaceName.startswith("docker"):
+			continue
+		if ifaceName.startswith("lo"):
+			continue
+
+		addrs = netifaces.ifaddresses(ifaceName)
 		try:
-			if_mac = addrs[netifaces.AF_LINK][0]['addr']
-			if_ip = addrs[netifaces.AF_INET][0]['addr']
-			if if_ip == "127.0.0.1":
+			ifMac = addrs[netifaces.AF_LINK][0]["addr"]
+			ipAddr = addrs[netifaces.AF_INET][0]["addr"]
+			if ipAddr.startswith("127."):
 				continue
-			ret.append(if_ip)
+			ret.append([ifaceName, ipAddr, ifMac])
 		except IndexError as e:
 			pass
 		except KeyError as e:
 			pass
+
 	return ret
 #
+
+
+
+
+#
+# Retrieve all IP addresses from all active network adapters (excluding loopback and docker)
+#
+def getIPs():
+	return [ x[1] for x in getIPsEx ]
+#
+
+
 
 
 
@@ -54,7 +75,7 @@ class LocalIPAddressDetector(object):
 	#
 
 	#
-	# Retrieve all local IP addresses this service might be concated in a local network.
+	# Retrieve all local IP addresses this machine might be contaced in a local network.
 	#
 	def getIPAddresses(self):
 		ret = []
@@ -63,9 +84,9 @@ class LocalIPAddressDetector(object):
 		for ifaceName in netifaces.interfaces():
 			addrs = netifaces.ifaddresses(ifaceName)
 			try:
-				#if_mac = addrs[netifaces.AF_LINK][0]['addr']
-				ipAddr = addrs[netifaces.AF_INET][0]['addr']
-				if ipAddr == "127.0.0.1":
+				#if_mac = addrs[netifaces.AF_LINK][0]["addr"]
+				ipAddr = addrs[netifaces.AF_INET][0]["addr"]
+				if ipAddr.startswith("127."):
 					continue
 				ipAddrTuples.append([ifaceName, ipAddr, False])
 			except IndexError as e:
