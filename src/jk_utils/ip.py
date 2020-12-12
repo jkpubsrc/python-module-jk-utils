@@ -45,7 +45,7 @@ def getIPsEx():
 # Retrieve all IP addresses from all active network adapters (excluding loopback and docker)
 #
 def getIPs():
-	return [ x[1] for x in getIPsEx ]
+	return [ x[1] for x in getIPsEx() ]
 #
 
 

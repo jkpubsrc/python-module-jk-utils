@@ -1,7 +1,7 @@
 ﻿
 
 
-__version__ = "0.2020.12.11"
+__version__ = "0.2020.12.12"
 
 
 from .D import D
