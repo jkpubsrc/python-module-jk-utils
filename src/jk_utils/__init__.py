@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.12.12"
+__version__ = "0.2020.12.14"
 
 
 
@@ -53,7 +53,9 @@ from . import processes
 from .RandomStateID import RandomStateID
 from .TextOutputBuffer import TextOutputBuffer
 from .VolatileValue import VolatileValue
+from .Bytes import Bytes
 
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
+
