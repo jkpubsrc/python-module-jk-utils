@@ -35,7 +35,7 @@ def getFileSystemStats(mountPointPath):
 	return FileSystemStats(
 		bytesTotal, bytesUsed, bytesFreeSystem, bytesFreeUser, rateBytesUsed,
 		inodesTotal, inodesUsed, inodesFree, rateInodesUsed
-		)
+	)
 #
 
 def findMountPoint(path:str):

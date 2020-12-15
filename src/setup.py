@@ -44,7 +44,7 @@ setup(
 		"jk_utils.datetime",
 		"jk_utils.tokenizer2",
 	],
-	version = "0.2020.12.14",
+	version = "0.2020.12.15",
 	zip_safe = False,
 	long_description = readme(),
 	long_description_content_type="text/markdown",
