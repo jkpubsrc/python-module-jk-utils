@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.12.15"
+__version__ = "0.2020.12.23"
 
 
 
@@ -55,6 +55,7 @@ from .TextOutputBuffer import TextOutputBuffer
 from .VolatileValue import VolatileValue
 from .Bytes import Bytes
 from .AmountOfBytes import AmountOfBytes
+from .ImplementationError import ImplementationError
 
 
 # the data node implementation has been moved to an own package: jk_datanodes

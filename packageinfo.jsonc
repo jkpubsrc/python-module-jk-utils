@@ -20,7 +20,7 @@
 		"license": "Apache2",
 		"name": "jk_utils",
 		"packageClass": "python-module",
-		"version": "0.2020.12.15"
+		"version": "0.2020.12.23"
 	},
 	"repositories": [
 		{
@@ -41,7 +41,7 @@
 			"sortedcontainers",
 			"jk_simpleexec",
 			"jk_logging",
-			"netifaces"
+			"netifaces",
 		],
 		"python_packages_dev": [],
 		"system_apt_packages": []
@@ -54,7 +54,8 @@
 			"jk_utils.async",
 			"jk_utils.color",
 			"jk_utils.datetime",
-			"jk_utils.tokenizer2"
+			"jk_utils.tokenizer2",
+			"jk_utils.typed",
 		]
 	}
 }

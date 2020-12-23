@@ -198,7 +198,14 @@ class AmountOfBytes(object):
 	################################################################################################################################
 
 	@staticmethod
-	def parseFromStr(v:typing.Union[int,str]):
+	def parseFromStr(v:str):
+		assert isinstance(v, str)
+		return AmountOfBytes(v)
+	#
+
+	@staticmethod
+	def parse(v:typing.Union[int,str]):
+		assert isinstance(v, (int,str))
 		return AmountOfBytes(v)
 	#
 
