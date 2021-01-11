@@ -37,3 +37,16 @@ print(fDiff)
 assert isinstance(fDiff, float)
 assert 0 <= fDiff <= 1
 
+assert t3 > 0
+
+t4 = TimeStamp(0)
+assert t4 == 0
+
+
+
+
+
+
+
+
+

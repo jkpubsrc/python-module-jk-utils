@@ -109,6 +109,92 @@ class TimeStamp(object):
 			raise TypeError(repr(other))
 	#
 
+	def __gt__(self, other):
+		tOther = None
+		if isinstance(other, (int,float)):
+			tOther = other
+		elif isinstance(other, datetime.datetime):
+			tOther = _dateTimeToSecondsSinceEpoch(other)
+		elif isinstance(other, TimeStamp):
+			tOther = other.__t
+		else:
+			raise TypeError(repr(other))
+
+		return self.__t > tOther
+	#
+
+	def __ge__(self, other):
+		tOther = None
+		if isinstance(other, (int,float)):
+			tOther = other
+		elif isinstance(other, datetime.datetime):
+			tOther = _dateTimeToSecondsSinceEpoch(other)
+		elif isinstance(other, TimeStamp):
+			tOther = other.__t
+		else:
+			raise TypeError(repr(other))
+
+		return self.__t >= tOther
+	#
+
+	def __lt__(self, other):
+		tOther = None
+		if isinstance(other, (int,float)):
+			tOther = other
+		elif isinstance(other, datetime.datetime):
+			tOther = _dateTimeToSecondsSinceEpoch(other)
+		elif isinstance(other, TimeStamp):
+			tOther = other.__t
+		else:
+			raise TypeError(repr(other))
+
+		return self.__t < tOther
+	#
+
+	def __le__(self, other):
+		tOther = None
+		if isinstance(other, (int,float)):
+			tOther = other
+		elif isinstance(other, datetime.datetime):
+			tOther = _dateTimeToSecondsSinceEpoch(other)
+		elif isinstance(other, TimeStamp):
+			tOther = other.__t
+		else:
+			raise TypeError(repr(other))
+
+		return self.__t <= tOther
+	#
+
+	def __eq__(self, other):
+		tOther = None
+		if isinstance(other, (int,float)):
+			tOther = other
+		elif isinstance(other, datetime.datetime):
+			tOther = _dateTimeToSecondsSinceEpoch(other)
+		elif isinstance(other, TimeStamp):
+			tOther = other.__t
+		else:
+			raise TypeError(repr(other))
+
+		fDiff = abs(self.__t - tOther)
+		return fDiff < 0.0000000001
+	#
+
+	def __ne__(self, other):
+		tOther = None
+		if isinstance(other, (int,float)):
+			tOther = other
+		elif isinstance(other, datetime.datetime):
+			tOther = _dateTimeToSecondsSinceEpoch(other)
+		elif isinstance(other, TimeStamp):
+			tOther = other.__t
+		else:
+			raise TypeError(repr(other))
+
+		fDiff = abs(self.__t - tOther)
+		return fDiff >= 0.0000000001
+	#
+
 	################################################################################################################################
 	## Public Static Methods
 	################################################################################################################################
