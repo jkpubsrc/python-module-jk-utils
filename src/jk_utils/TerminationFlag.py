@@ -2,8 +2,13 @@
 
 
 
+from .InterruptedException import InterruptedException
 
-class ImplementationError(object):
+
+#
+# This class implements a termination flag for long running tasks.
+#
+class TerminationFlag(object):
 
 	################################################################################################################################
 	## Constructor
@@ -12,8 +17,8 @@ class ImplementationError(object):
 	#
 	# Constructor method.
 	#
-	def __init__(self, msg:str = "Implementation Error!"):
-		super().__init__(msg)
+	def __init__(self):
+		self.__bTerminate = False
 	#
 
 	################################################################################################################################
@@ -28,7 +33,23 @@ class ImplementationError(object):
 	## Public Methods
 	################################################################################################################################
 
+	def terminate(self):
+		self.__bTerminate = True
+	#
+
+	#
+	# Check if the current activity is to be interrupted. In that case an InterruptedException is raised.
+	#
+	def check(self):
+		if self.__bTerminate:
+			raise InterruptedException()
+	#
+
 #
+
+
+
+
 
 
 

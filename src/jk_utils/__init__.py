@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2020.12.27"
+__version__ = "0.2021.1.11"
 
 
 
@@ -37,7 +37,6 @@ from .TextTable import TextTable, TextTableCell
 from .CmdLineParser import CmdLineParser
 from .StateManager import StateManager
 from .ObservableEvent import ObservableEvent
-from .WeakRefObservableEvent import WeakRefObservableEvent
 from .Timer import Timer
 from .PersistentProperties import PersistentProperties
 from .AsyncRunner import AsyncRunner
@@ -56,7 +55,13 @@ from .VolatileValue import VolatileValue
 from .Bytes import Bytes
 from .AmountOfBytes import AmountOfBytes
 from .ImplementationError import ImplementationError
+from .TerminationFlag import TerminationFlag
+from .InterruptedException import InterruptedException
+from .deprecated import deprecated
+from .TimeStamp import TimeStamp
+
 
 
 # the data node implementation has been moved to an own package: jk_datanodes
 #from .datanodes import EnumNodeType, DataNode, DataNodeDef
+

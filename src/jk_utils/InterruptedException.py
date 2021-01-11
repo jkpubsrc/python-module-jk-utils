@@ -3,7 +3,7 @@
 
 
 
-class ImplementationError(object):
+class InterruptedException(Exception):
 
 	################################################################################################################################
 	## Constructor
@@ -12,7 +12,7 @@ class ImplementationError(object):
 	#
 	# Constructor method.
 	#
-	def __init__(self, msg:str = "Implementation Error!"):
+	def __init__(self, msg:str = "Processing interrupted!"):
 		super().__init__(msg)
 	#
 
@@ -29,8 +29,5 @@ class ImplementationError(object):
 	################################################################################################################################
 
 #
-
-
-
 
 

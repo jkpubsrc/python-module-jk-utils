@@ -22,7 +22,7 @@ class WeakValueList:
 
 	#
 	# Get a list of all objects that are still alive.
-	# Cleanup of references no longer needes is performed automatically if this method is called.
+	# Cleanup of references that are no longer needed is performed automatically if this method is called.
 	#
 	@property
 	def itemsAlive(self) -> list:
