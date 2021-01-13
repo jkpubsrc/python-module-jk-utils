@@ -85,6 +85,10 @@ class TimeStamp(object):
 		return "{}".format(self.dateTime)
 	#
 
+	def toDateTime(self) -> datetime.datetime:
+		return _secondsSinceEpocheToDateTime(self.__t)
+	#
+
 	def __float__(self):
 		return self.__t
 	#

@@ -5,7 +5,8 @@
 	* Added: `TerminationFlag`
 	* Added: `InterruptedException`
 	* Added: `TimeStamp`
-
+* 2021-01-13
+	* Added: `duration` subcomponent
 
 
 

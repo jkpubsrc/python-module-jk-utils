@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2021.1.11.1"
+__version__ = "0.2021.1.13"
 
 
 
@@ -59,6 +59,7 @@ from .TerminationFlag import TerminationFlag
 from .InterruptedException import InterruptedException
 from .deprecated import deprecated
 from .TimeStamp import TimeStamp
+from . import duration
 
 
 
