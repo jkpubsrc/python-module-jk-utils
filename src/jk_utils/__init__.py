@@ -1,6 +1,6 @@
 ﻿
 
-__version__ = "0.2021.1.13"
+__version__ = "0.2021.2.16"
 
 
 
@@ -60,6 +60,7 @@ from .InterruptedException import InterruptedException
 from .deprecated import deprecated
 from .TimeStamp import TimeStamp
 from . import duration
+from . import deferred
 
 
 
