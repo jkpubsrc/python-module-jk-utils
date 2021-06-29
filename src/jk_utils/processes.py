@@ -137,8 +137,6 @@ def runProcessAsOtherUser(accountName:str, filePath:str, args:typing.Union[list,
 		else:
 			assert isinstance(args, list)
 
-	assert log
-
 	# ----
 
 	if log:

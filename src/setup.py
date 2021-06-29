@@ -30,6 +30,7 @@ setup(
 		"sortedcontainers",
 		"jk_simpleexec",
 		"jk_logging",
+		"jk_version",
 		"netifaces",
 	],
 	keywords = [
@@ -46,7 +47,7 @@ setup(
 		"jk_utils.typed",
 		"jk_utils.weakref",
 	],
-	version = "0.2021.2.16",
+	version = "0.2021.6.29",
 	zip_safe = False,
 	long_description = readme(),
 	long_description_content_type="text/markdown",

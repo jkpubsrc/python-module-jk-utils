@@ -1,6 +1,7 @@
 
 
 import sys
+import math
 
 
 
@@ -22,12 +23,16 @@ _PROGRESS_PARAMS_BYTES = [
 
 
 
-def formatTime(seconds:float):
+def formatTime(seconds:float, withMilliseconds:bool = False):
 	timeSeconds = int(seconds) % 60
 	timeMinutes = int(seconds / 60)
 	timeHours = int(timeMinutes / 60)
 	timeMinutes = timeMinutes % 60
-	return "{:02d}:{:02d}:{:02d}".format(timeHours, timeMinutes, timeSeconds)
+	if withMilliseconds:
+		timeMillis = math.floor((seconds - int(seconds))*1000)
+		return "{:02d}:{:02d}:{:02d}.{:03d}".format(timeHours, timeMinutes, timeSeconds, timeMillis)
+	else:
+		return "{:02d}:{:02d}:{:02d}".format(timeHours, timeMinutes, timeSeconds)
 #
 
 

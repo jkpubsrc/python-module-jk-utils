@@ -6,6 +6,11 @@ import datetime
 
 
 
+
+
+#
+# This class represents a time value with 5 minutes accuracy.
+#
 class T5(object):
 
 	def __init__(self):

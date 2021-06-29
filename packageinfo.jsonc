@@ -20,7 +20,7 @@
 		"license": "Apache2",
 		"name": "jk_utils",
 		"packageClass": "python-module",
-		"version": "0.2021.2.16"
+		"version": "0.2021.6.29"
 	},
 	"repositories": [
 		{
@@ -41,6 +41,7 @@
 			"sortedcontainers",
 			"jk_simpleexec",
 			"jk_logging",
+			"jk_version",
 			"netifaces",
 		],
 		"python_packages_dev": [],

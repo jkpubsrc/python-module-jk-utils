@@ -13,9 +13,11 @@
 * 2021-02-16
 	* Added: `deferred` with `run()`
 
-
-
-
+* 2021-06-29
+	* Bugfix: Allow `None` for a logger in `runProcessAsOtherUser()`
+	* Added: Support for milliseconds in `formatTime()`
+	* Refactored: `T1`, `T5`, `D`
+	* Added: `TApprox`
 
 
 

@@ -8,19 +8,36 @@ import re
 
 
 
+#
+# This class represents a date.
+#
 class D(object):
+
+	################################################################################################################################
+	## Constructor
+	################################################################################################################################
 
 	def __init__(self):
 		self._dt = None
 	#
 
-	# ================================================================================================================================
-	# ==== Properties
-	# ================================================================================================================================
+	################################################################################################################################
+	## Properties
+	################################################################################################################################
 
+	#
+	# The time stamp in seconds
+	#
 	@property
 	def ts(self) -> int:
 		return int(self._dt.timestamp())
+	#
+
+	#
+	# The time stamp in nanoseconds.
+	#
+	def tsNano(self) -> int:
+		return int(self._dt.timestamp() * 1000000)
 	#
 
 	@property
@@ -28,53 +45,89 @@ class D(object):
 		return self._dt.year
 	#
 
+	#
+	# The month of this year, starting with one.
+	#
 	@property
 	def month(self) -> int:
 		return self._dt.month
 	#
 
+	#
+	# The month of this year, starting with zero.
+	#
 	@property
 	def month0(self) -> int:
 		return self._dt.month - 1
 	#
 
+	#
+	# The day of this month, starting with one.
+	#
 	@property
 	def day(self) -> int:
 		return self._dt.day
 	#
 
+	#
+	# The day of this month, starting with zero.
+	#
 	@property
 	def day0(self) -> int:
 		return self._dt.day - 1
 	#
 
+	#
+	# The week day: Monday = 1, Tuesday = 2, ..., Sunday = 7
+	#
 	@property
 	def dayOfWeek(self) -> int:
 		return self._dt.weekday() + 1
 	#
 
+	#
+	# The week day: Monday = 0, Tuesday = 1, ..., Sunday = 6
+	#
 	@property
 	def dayOfWeek0(self) -> int:
 		return self._dt.weekday()
 	#
 
+	#
+	# The week day: Monday = 1, Tuesday = 2, ..., Sunday = 7
+	#
 	@property
 	def weekday(self) -> int:
 		return self._dt.weekday() + 1
 	#
 
+	#
+	# The week day: Monday = 0, Tuesday = 1, ..., Sunday = 6
+	#
+	@property
+	def weekday0(self) -> int:
+		return self._dt.weekday() + 1
+	#
+
+	#
+	# This date in 8 digit year-month-day representaion.
+	#
 	@property
 	def yearMonthDay(self) -> int:
 		return self._dt.year * 10000 + self._dt.month * 100 + self._dt.day
 	#
 
+	#
+	# This date in 6 digit year-month representaion.
+	#
 	@property
 	def yearMonth(self) -> int:
 		return self._dt.year * 100 + self._dt.month
 	#
 
+	"""
 	#
-	# Calculates the week number
+	# Calculates the week number (using ISO week number algorithm, where Jan 1st is in week 1)
 	#
 	@property
 	def weekNo(self):
@@ -87,10 +140,19 @@ class D(object):
 		td = self._dt - d
 		return (td.days + correction) // 7
 	#
+	"""
 
-	# ================================================================================================================================
-	# ==== Special Methods
-	# ================================================================================================================================
+	#
+	# Official week number (where the week, that has the majority of days in this year, is week 1)
+	#
+	@property
+	def weekNo(self):
+		return self._dt.isocalendar()[1]
+	#
+
+	################################################################################################################################
+	## Special Methods
+	################################################################################################################################
 
 	def __str__(self):
 		return "{:04d}-{:02d}-{:02d}".format(self._dt.year, self._dt.month, self._dt.day)
@@ -100,9 +162,13 @@ class D(object):
 		return "{:04d}-{:02d}-{:02d}".format(self._dt.year, self._dt.month, self._dt.day)
 	#
 
-	# ================================================================================================================================
-	# ==== Operator Methods
-	# ================================================================================================================================
+	def __hash__(self):
+		return (self._dt.year * 10000 + self._dt.month * 100 + self._dt.day).__hash__()
+	#
+
+	################################################################################################################################
+	## Operator Methods
+	################################################################################################################################
 
 	def __eq__(self, other):
 		if isinstance(other, D):
@@ -179,9 +245,17 @@ class D(object):
 		return self._dt.timestamp()
 	#
 
-	# ================================================================================================================================
-	# ==== Methods
-	# ================================================================================================================================
+	################################################################################################################################
+	## Public Methods
+	################################################################################################################################
+
+	def toISOStr(self):
+		return "{:04d}-{:02d}-{:02d}".format(self._dt.year, self._dt.month, self._dt.day)
+	#
+
+	def toEUStr(self):
+		return "{:02d}.{:02d}.{:04d}".format(self._dt.day, self._dt.month, self._dt.year)
+	#
 
 	def toJSON(self) -> dict:
 		return {
@@ -198,6 +272,8 @@ class D(object):
 	#
 	# Creates a D object representing the first of January of this year
 	#
+	# @return		D		A new date object
+	#
 	def startOfYear(self):
 		ret = D()
 		ret._dt = datetime.datetime(self.year, 1, 1)
@@ -207,18 +283,26 @@ class D(object):
 	#
 	# Creates a D object representing the 31st of December of this year
 	#
+	# @return		D		A new date object
+	#
 	def endOfYear(self):
 		ret = D()
 		ret._dt = datetime.datetime(self.year, 12, 31)
 		return ret
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def startOfMonth(self):
 		ret = D()
 		ret._dt = datetime.datetime(self.year, self.month, 1)
 		return ret
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def endOfMonth(self):
 		y = self.year
 		m = self.month + 1
@@ -233,12 +317,18 @@ class D(object):
 		return ret
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def nextYear(self):
 		ret = D()
 		ret._dt = datetime.datetime(self.year + 1, self.month, self.day)
 		return ret
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def previousYear(self):
 		if self.year <= 1:
 			raise Exception()
@@ -247,6 +337,9 @@ class D(object):
 		return ret
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def nextMonth(self):
 		y = self.year
 		m = self.month
@@ -268,6 +361,9 @@ class D(object):
 		return ret
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def previousMonth(self):
 		y = self.year
 		m = self.month
@@ -289,6 +385,9 @@ class D(object):
 		return ret
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def startOfWeek(self):
 		wd = self._dt.weekday()
 		dt = self._dt.timestamp() - 24*60*60*wd
@@ -297,6 +396,20 @@ class D(object):
 		return d
 	#
 
+	#
+	# @return		D		A new date object
+	#
+	def endOfWeek(self):
+		wd = self._dt.weekday()
+		dt = self._dt.timestamp() - 24*60*60*wd + 24*60*60*6
+		d = D()
+		d._dt = datetime.datetime.fromtimestamp(dt)
+		return d
+	#
+
+	#
+	# @return		D		A new date object
+	#
 	def nextWeek(self):
 		wd = self._dt.weekday()
 		dt = self._dt.timestamp() - 24*60*60*wd
@@ -305,6 +418,9 @@ class D(object):
 		return d
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def previousWeek(self):
 		wd = self._dt.weekday()
 		dt = self._dt.timestamp() - 24*60*60*wd
@@ -313,18 +429,27 @@ class D(object):
 		return d
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def nextDay(self):
 		d = D()
 		d._dt = datetime.datetime.fromtimestamp(self._dt.timestamp() + 24*60*60)
 		return d
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def previousDay(self):
 		d = D()
 		d._dt = datetime.datetime.fromtimestamp(self._dt.timestamp() - 24*60*60)
 		return d
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def addMonths(self, m:int):
 		assert isinstance(m, int)
 
@@ -346,12 +471,18 @@ class D(object):
 		return D.createFrom(yearMonthDayTuple=(yy, mm, dd))
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def subtractMonths(self, m:int):
 		assert isinstance(m, int)
 
 		return self.addMonths(-m)
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def addYears(self, y:int):
 		assert isinstance(y, int)
 
@@ -362,12 +493,18 @@ class D(object):
 		return D.createFrom(yearMonthDayTuple=(yy, mm, dd))
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def subtractYears(self, y:int):
 		assert isinstance(y, int)
 
 		return self.addYears(-y)
 	#
 
+	#
+	# @return		D		A new date object
+	#
 	def clone(self):
 		ret = D()
 		ret._dt = self._dt
@@ -386,9 +523,9 @@ class D(object):
 		return ret
 	#
 
-	# ================================================================================================================================
-	# ==== Static Methods
-	# ================================================================================================================================
+	################################################################################################################################
+	## Static Methods
+	################################################################################################################################
 
 	#
 	# Returns a date object of today.
@@ -461,9 +598,9 @@ class D(object):
 	def __tryParse(s:str):
 		for patternType, pattern in [
 			("ymd", r"(?P<year>\d\d\d\d)-(?P<month>\d\d)-(?P<day>\d\d)"),
-			("ymd", r"(?P<day>\d\d?).(?P<month>\d\d?).(?P<year>\d\d\d\d)"),
+			("ymd", r"(?P<day>\d\d?)\.(?P<month>\d\d?)\.(?P<year>\d\d\d\d)"),
 			("ymd", r"(?P<month>\d\d?)/(?P<day>\d\d?)/(?P<year>\d\d\d\d)"),
-			("md", r"(?P<day>\d\d?).(?P<month>\d\d?)."),
+			("md", r"(?P<day>\d\d?)\.(?P<month>\d\d?)\."),
 			("ts", r"(?P<ts>-?\d+)"),
 		]:
 			m = re.match("^" + pattern + "$", s)
@@ -519,6 +656,8 @@ class D(object):
 					ret._dt = D.__createFrom_timeStamp(something)
 				else:
 					raise Exception()
+			elif isinstance(something, str):
+				ret = D.parseFromStr(something)
 			elif isinstance(something, (tuple, list)):
 				ret._dt = D.__createFrom_yearMonthDayTuple(something)
 			else:
