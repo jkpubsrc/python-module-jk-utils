@@ -30,7 +30,7 @@ class GracefullyHandleKeyboardInterrupt(object):
 	@property
 	def isInterrupted(self):
 		return self.__signal_received != False
-
+#
 
 
 

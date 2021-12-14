@@ -9,6 +9,14 @@ import stat
 #
 class ChModValue:
 
+	################################################################
+	## Constants
+	################################################################
+
+	################################################################
+	## Constructor
+	################################################################
+
 	def __init__(self,
 		v = None,
 		userR:bool = False,
@@ -40,17 +48,23 @@ class ChModValue:
 			raise Exception("Unexected type: " + repr(type(v)))
 	#
 
-	@staticmethod
-	def create(v):
-		if isinstance(v, ChModValue):
-			return v
-		elif isinstance(v, int):
-			return ChModValue(v)
-		elif isinstance(v, str):
-			return ChModValue(v)
-		else:
-			raise Exception("Unexpected value: " + repr(v))
+	################################################################
+	## Properties
+	################################################################
+
+	################################################################
+	## Helper Methods
+	################################################################
+
+	def __setBit(self, value, bitNo):
+		mask = 1 << bitNo		# Compute mask, an integer with just bit 'index' set.
+		value |= mask			# If x was True, set the bit indicated by the mask.
+		return value
 	#
+
+	################################################################
+	## Public Methods
+	################################################################
 
 	def cloneObject(self):
 		return ChModValue(self.toInt())
@@ -91,7 +105,7 @@ class ChModValue:
 		return self.__str__()
 	#
 
-	def toStrChMod(self):
+	def toStrChMod(self) -> str:
 		vU = ""
 		if self.userR:
 			vU += "r"
@@ -120,6 +134,9 @@ class ChModValue:
 	# Accept data from the specified integer value.
 	#
 	def fromInt(self, v:int):
+		if (v < 0) or (v > 0o777):
+			raise Exception("Unrecognized int!")
+
 		self.userR = v & stat.S_IRUSR == stat.S_IRUSR
 		self.userW = v & stat.S_IWUSR == stat.S_IWUSR
 		self.userX = v & stat.S_IXUSR == stat.S_IXUSR
@@ -135,14 +152,22 @@ class ChModValue:
 
 	#
 	# Accept data from the specified string value.
+	# The data in this object is set to exactly match the specified argument.
 	# An exception is thrown if the specified string could not be parsed.
 	#
-	# @param	str s			A string to parse. You should specify something like "-rwxr--r--" or "rwxr--r--" or
-	#							something like "a=rw", "ug=rwx" or "o=x" here.
+	# @param	str s			A string to parse. You should specify something like this:
+	#							* "-rwxr--r--" (10 characters, the first must be '-')
+	# 							* "rwxr--r--" (9 characters)
+	#							* an octal number such as "755"
+	#							* "a=rw", "ug=rwx", "o=x", etc.
 	#
 	def fromStr(self, v:str):
 		assert isinstance(v, str)
 		v = v.lower()
+
+		if re.match("^[0-7][0-7][0-7]$", v):
+			# ocal form
+			return self.fromInt(int(v, 8))
 
 		if re.match("^[r-][w-][x-][r-][w-][x-][r-][w-][x-]$", v):
 			self.userR = v[0] == "r"
@@ -154,7 +179,9 @@ class ChModValue:
 			self.otherR = v[6] == "r"
 			self.otherW = v[7] == "w"
 			self.otherX = v[8] == "x"
-		elif re.match("^-[r-][w-][x-][r-][w-][x-][r-][w-][x-]$", v):
+			return self
+
+		if re.match("^-[r-][w-][x-][r-][w-][x-][r-][w-][x-]$", v):
 			self.userR = v[1] == "r"
 			self.userW = v[2] == "w"
 			self.userX = v[3] == "x"
@@ -164,12 +191,13 @@ class ChModValue:
 			self.otherR = v[7] == "r"
 			self.otherW = v[8] == "w"
 			self.otherX = v[9] == "x"
-		elif re.match("^[ugoa]*[=][rwx]{1-3}$", v):
-			self.modify(v)
-		else:
-			raise Exception("Unrecognized string!")
+			return self
 
-		return self
+		if re.match("^[ugoa]*[=][rwx]{1-3}$", v):
+			self.modify(v)
+			return self
+
+		raise Exception("Unrecognized string!")
 	#
 
 	#
@@ -224,7 +252,7 @@ class ChModValue:
 		return self
 	#
 
-	def toInt(self):
+	def toInt(self) -> int:
 		v = 0
 		if self.userR:
 			v = self.__setBit(v, 8)
@@ -247,10 +275,32 @@ class ChModValue:
 		return v
 	#
 
-	def __setBit(self, value, bitNo):
-		mask = 1 << bitNo		# Compute mask, an integer with just bit 'index' set.
-		value |= mask			# If x was True, set the bit indicated by the mask.
-		return value
+	#
+	# Convert to octal, e.g. "755"
+	#
+	def toStrOcal(self) -> str:
+		v = self.toInt()
+		s = oct(v)
+		assert s.startswith("0o")
+		s = s[2:]
+		assert len(s) <= 3
+		while len(s) < 3:
+			s = "0" + s
+		return s
+	#
+
+	################################################################
+	## Public Static Methods
+	################################################################
+
+	@staticmethod
+	def create(v):
+		if isinstance(v, ChModValue):
+			return v
+		elif isinstance(v, (int,str)):
+			return ChModValue(v)
+		else:
+			raise Exception("Unexpected value: " + repr(v))
 	#
 
 #

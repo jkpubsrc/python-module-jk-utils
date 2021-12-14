@@ -279,13 +279,10 @@ def getUserHome() -> str:
 
 
 
-__all__ = (getuid, lookup_username, getUserHome)
 
 
 
 
-if __name__ == '__main__':
-	print('%s %s' % (getuid(), lookup_username()))
 
 # References:
 # [1] http://msdn.microsoft.com/en-us/library/windows/desktop/ms681381

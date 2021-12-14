@@ -19,8 +19,11 @@
 	* Refactored: `T1`, `T5`, `D`
 	* Added: `TApprox`
 
+* 2021-12-03
+	* Added: octal support in ChModValue
 
-
+* 2021-12-14
+	* Improved: Compatibility to non-POSIX systems by excluding incompatible parts of this module.
 
 
 

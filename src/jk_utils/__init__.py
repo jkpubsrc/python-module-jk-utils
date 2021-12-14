@@ -1,6 +1,11 @@
 ﻿
 
-__version__ = "0.2021.6.29"
+__version__ = "0.2021.12.14"
+
+
+
+import os
+_bIsPOSIX = os.name == "posix"
 
 
 
@@ -9,14 +14,16 @@ from . import file_rw
 from . import array
 from . import oop
 from . import check
-from . import mac
-from . import ip
+if _bIsPOSIX:
+	from . import mac
+	from . import ip
 from . import ping
 from . import re
 from . import hex
 from . import reflection
 from . import pathutils
-from . import fsutils
+if _bIsPOSIX:
+	from . import fsutils
 from . import rng
 from . import datatypes
 from . import python
@@ -24,7 +31,8 @@ from .GracefullyHandleKeyboardInterrupt import GracefullyHandleKeyboardInterrupt
 from .DelayedKeyboardInterrupt import DelayedKeyboardInterrupt
 from .GracefullyHandleInterrupts import GracefullyHandleInterrupts
 from .dtutils import dtutils
-from .arp import arp, cachedarp, ArpRecord
+if _bIsPOSIX:
+	from .arp import arp, cachedarp, ArpRecord
 from .Cache import Cache
 from .ChangedFlag import ChangedFlag
 from .Stack import Stack

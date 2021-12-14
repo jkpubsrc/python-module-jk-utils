@@ -28,18 +28,21 @@ class ArpRecord(object):
 		#self.flag = flag
 		self.macAddress = macAddr
 		self.interface = interface
+	#
 
 	def dump(self, out_stream = sys.stdout, prefix = ""):
 		out_stream.write(prefix + self.__repr__() + "\n")
+	#
 
 	def __repr__(self):
 		return "ARP(" + self.ipAddress + ", " + self.macAddress + ", " + self.interface + ")"
+	#
 
 	def __str__(self):
 		return "ARP(" + self.ipAddress + ", " + self.macAddress + ", " + self.interface + ")"
+	#
 
-
-
+#
 
 
 
@@ -55,7 +58,9 @@ class cachedarp(object):
 		mac = arp.arpResolveByIP(ipAddress)
 		cachedarp.__cache.put(ipAddress, (True, mac))
 		return mac
+	#
 
+#
 
 
 
@@ -87,7 +92,6 @@ class arp(object):
 				return arpEntry
 		arpEntry = arp.arpQuery(ipAddress)
 		return arpEntry
-
 	#
 
 
@@ -107,7 +111,6 @@ class arp(object):
 			if arpEntry.macAddress == macAddress:
 				return arpEntry
 		return None
-
 	#
 
 
@@ -137,7 +140,6 @@ class arp(object):
 			return None
 		else:
 			raise Exception("arping failed: Unexpected output: " + lines[0])
-
 	#
 
 
@@ -163,7 +165,6 @@ class arp(object):
 			if flag in [2, 4, 6, 8]:
 				ret.append(ArpRecord(ipAddress, flag, macAddr, interfaceDevice))
 		return ret
-
 	#
 
 
@@ -189,10 +190,9 @@ class arp(object):
 				if_mac = if_ip = None
 			ret.append(ArpRecord(if_ip, -1, if_mac, None))
 		return ret
-
 	#
 
-
+#
 
 
 
