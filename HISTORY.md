@@ -20,11 +20,13 @@
 	* Added: `TApprox`
 
 * 2021-12-03
-	* Added: octal support in ChModValue
+	* Added: octal support in `ChModValue`
 
 * 2021-12-14
 	* Improved: Compatibility to non-POSIX systems by excluding incompatible parts of this module.
 
+* 2022-01-08
+	* Fixed: Class `ImplementationError`
 
 
 

@@ -3,7 +3,7 @@
 
 
 
-class ImplementationError(object):
+class ImplementationError(Exception):
 
 	################################################################################################################################
 	## Constructor
