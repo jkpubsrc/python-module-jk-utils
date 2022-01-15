@@ -20,7 +20,7 @@
 		"license": "Apache2",
 		"name": "jk_utils",
 		"packageClass": "python-module",
-		"version": "0.2022.1.8"
+		"version": "0.2022.1.15"
 	},
 	"repositories": [
 		{

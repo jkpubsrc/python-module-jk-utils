@@ -66,8 +66,9 @@ def killProcess(process:typing.Union[int,dict], log) -> bool:
 #										(In that case error log messages might have been generated, but no detailed error
 #										information is returned.)
 #
-def killProcesses(processes:typing.Union[list, tuple], log) -> bool:
+def killProcesses(processes:typing.Union[list,tuple], bIgnoreNonExisting:bool, log=None) -> bool:
 	assert isinstance(processes, (list, tuple))
+	assert isinstance(bIgnoreNonExisting, bool)
 
 	# ----
 
@@ -90,6 +91,11 @@ def killProcesses(processes:typing.Union[list, tuple], log) -> bool:
 			if log:
 				log.notice("Killing: " + str(pid))
 			os.kill(pid, signal.SIGTERM)
+		except ProcessLookupError as ee:
+			if not bIgnoreNonExisting:
+				if log:
+					log.error(ee)
+				ret = False
 		except Exception as ee:
 			if log:
 				log.error(ee)
