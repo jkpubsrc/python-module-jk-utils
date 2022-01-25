@@ -31,7 +31,8 @@
 * 2022-01-15
 	* Added: more arguments for killProcesses()
 
-
+* 2022-01-25:
+	* Adapted: making `netifaces` optional
 
 
 

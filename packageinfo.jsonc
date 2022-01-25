@@ -20,7 +20,7 @@
 		"license": "Apache2",
 		"name": "jk_utils",
 		"packageClass": "python-module",
-		"version": "0.2022.1.15"
+		"version": "0.2022.1.25"
 	},
 	"repositories": [
 		{
@@ -42,7 +42,7 @@
 			"jk_simpleexec",
 			"jk_logging",
 			"jk_version",
-			"netifaces",
+			//"netifaces",
 		],
 		"python_packages_dev": [],
 		"system_apt_packages": []

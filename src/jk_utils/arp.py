@@ -9,7 +9,13 @@ import time
 import json
 import codecs
 import re
-import netifaces
+
+_has_netifaces = False
+try:
+	import netifaces
+	_has_netifaces = True
+except:
+	pass
 
 import jk_simpleexec
 
@@ -178,18 +184,24 @@ class arp(object):
 	#
 	@staticmethod
 	def arpEntriesOfLocalInterfaces():
-		ret = []
-		for i in netifaces.interfaces():
-			addrs = netifaces.ifaddresses(i)
-			try:
-				if_mac = addrs[netifaces.AF_LINK][0]['addr']
-				if_ip = addrs[netifaces.AF_INET][0]['addr']
-			except IndexError as e:
-				if_mac = if_ip = None
-			except KeyError as e: #ignore ifaces that dont have MAC or IP
-				if_mac = if_ip = None
-			ret.append(ArpRecord(if_ip, -1, if_mac, None))
-		return ret
+		if _has_netifaces:
+			ret = []
+
+			for i in netifaces.interfaces():
+				addrs = netifaces.ifaddresses(i)
+				try:
+					if_mac = addrs[netifaces.AF_LINK][0]['addr']
+					if_ip = addrs[netifaces.AF_INET][0]['addr']
+				except IndexError as e:
+					if_mac = if_ip = None
+				except KeyError as e: #ignore ifaces that dont have MAC or IP
+					if_mac = if_ip = None
+				ret.append(ArpRecord(if_ip, -1, if_mac, None))
+
+			return ret
+
+		else:
+			raise Exception("Python module netiface module not available!")
 	#
 
 #
