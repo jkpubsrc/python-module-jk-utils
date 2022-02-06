@@ -34,7 +34,8 @@
 * 2022-01-25:
 	* Adapted: making `netifaces` optional
 
-
+* 2022-02-06:
+	* Improved `ChModValue`
 
 
 

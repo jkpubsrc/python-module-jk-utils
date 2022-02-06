@@ -46,7 +46,7 @@ setup(
 		"jk_utils.typed",
 		"jk_utils.weakref",
 	],
-	version = "0.2022.1.25",
+	version = "0.2022.2.6",
 	zip_safe = False,
 	long_description = readme(),
 	long_description_content_type="text/markdown",

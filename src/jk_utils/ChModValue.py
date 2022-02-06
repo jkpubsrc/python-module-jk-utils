@@ -18,16 +18,16 @@ class ChModValue:
 	################################################################
 
 	def __init__(self,
-		v = None,
-		userR:bool = False,
-		userW:bool = False,
-		userX:bool = False,
-		groupR:bool = False,
-		groupW:bool = False,
-		groupX:bool = False,
-		otherR:bool = False,
-		otherW:bool = False,
-		otherX:bool = False,
+			v = None,
+			userR:bool = False,
+			userW:bool = False,
+			userX:bool = False,
+			groupR:bool = False,
+			groupW:bool = False,
+			groupX:bool = False,
+			otherR:bool = False,
+			otherW:bool = False,
+			otherX:bool = False,
 		):
 
 		if v is None:
@@ -101,6 +101,44 @@ class ChModValue:
 		return self.toInt()
 	#
 
+	def __ne__(self, other) -> bool:
+		if isinstance(other, int):
+			return self.toInt() != (other & 0o777)
+		elif isinstance(other, str):
+			return self.__ne__(ChModValue(other))
+		elif isinstance(other, ChModValue):
+			return (self.userR != other.userR) \
+				or (self.userW != other.userW) \
+				or (self.userX != other.userX) \
+				or (self.groupR != other.groupR) \
+				or (self.groupW != other.groupW) \
+				or (self.groupX != other.groupX) \
+				or (self.otherR != other.otherR) \
+				or (self.otherW != other.otherW) \
+				or (self.otherX != other.otherX)
+		else:
+			return True
+	#
+
+	def __eq__(self, other) -> bool:
+		if isinstance(other, int):
+			return self.toInt() == (other & 0o777)
+		elif isinstance(other, str):
+			return self.__eq__(ChModValue(other))
+		elif isinstance(other, ChModValue):
+			return (self.userR == other.userR) \
+				and (self.userW == other.userW) \
+				and (self.userX == other.userX) \
+				and (self.groupR == other.groupR) \
+				and (self.groupW == other.groupW) \
+				and (self.groupX == other.groupX) \
+				and (self.otherR == other.otherR) \
+				and (self.otherW == other.otherW) \
+				and (self.otherX == other.otherX)
+		else:
+			return False
+	#
+
 	def toStr(self):
 		return self.__str__()
 	#
@@ -134,8 +172,11 @@ class ChModValue:
 	# Accept data from the specified integer value.
 	#
 	def fromInt(self, v:int):
-		if (v < 0) or (v > 0o777):
+		assert isinstance(v, int)
+		if v < 0:
 			raise Exception("Unrecognized int!")
+
+		v = v & 0o777
 
 		self.userR = v & stat.S_IRUSR == stat.S_IRUSR
 		self.userW = v & stat.S_IWUSR == stat.S_IWUSR
