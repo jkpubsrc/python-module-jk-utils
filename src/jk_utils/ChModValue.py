@@ -1,5 +1,6 @@
 import re
 import stat
+import typing
 
 
 
@@ -334,8 +335,34 @@ class ChModValue:
 	## Public Static Methods
 	################################################################
 
+	#
+	# Construct a ChModValue object.
+	# This method is *not* tolerant to <c>None</c>.
+	#
+	# @return		int|str|ChModValue v	(required) The value to parse. If <c>None</c> is specified an exception is thrown.
+	# @return		ChModValue|None			Returns a ChModValue object.
+	#
 	@staticmethod
 	def create(v):
+		if isinstance(v, ChModValue):
+			return v
+		elif isinstance(v, (int,str)):
+			return ChModValue(v)
+		else:
+			raise Exception("Unexpected value: " + repr(v))
+	#
+
+	#
+	# Construct a ChModValue object.
+	# This method is tolerant to <c>None</c>.
+	#
+	# @return		int|str|ChModValue v	(optional) The value to parse. If <c>None</c> is specified <c>None</c> is returned.
+	# @return		ChModValue|None			Returns a ChModValue object if <c>v</c> had a non-None-value.
+	#
+	@staticmethod
+	def createN(v):
+		if v is None:
+			return None
 		if isinstance(v, ChModValue):
 			return v
 		elif isinstance(v, (int,str)):
