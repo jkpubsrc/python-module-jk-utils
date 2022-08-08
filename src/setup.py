@@ -24,9 +24,8 @@ setup(
 		"Programming Language :: Python :: 3",
 	],
 	description = "This python module provides various utility functions and classes.",
-	include_package_data = False,
+	include_package_data = True,
 	install_requires = [
-		"sh",
 		"sortedcontainers",
 		"jk_simpleexec",
 		"jk_logging",
@@ -37,6 +36,10 @@ setup(
 	],
 	license = "Apache2",
 	name = "jk_utils",
+	package_data = {
+		"": [
+		],
+	},
 	packages = [
 		"jk_utils",
 		"jk_utils.async",
@@ -46,8 +49,10 @@ setup(
 		"jk_utils.typed",
 		"jk_utils.weakref",
 	],
-	version = "0.2022.2.6.1",
+	scripts = [
+	],
+	version = '0.2022.8.8',
 	zip_safe = False,
 	long_description = readme(),
-	long_description_content_type="text/markdown",
+	long_description_content_type = "text/markdown",
 )

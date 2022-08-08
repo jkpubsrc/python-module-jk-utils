@@ -37,5 +37,8 @@
 * 2022-02-06:
 	* Improved `ChModValue`
 
+* 2022-08-08:
+	* Removed: Dependency to `sh`
+	* Removed: `ping()` for Windows (because this functionality is not supported by Windows)
 
 

@@ -1,6 +1,8 @@
 ﻿
 
-__version__ = "0.2022.2.6.1"
+
+__author__ = "Jürgen Knauth"
+__version__ = "0.2022.8.8"
 
 
 
@@ -17,7 +19,7 @@ from . import check
 if _bIsPOSIX:
 	from . import mac
 	from . import ip
-from . import ping
+	from . import ping
 from . import re
 from . import hex
 from . import reflection

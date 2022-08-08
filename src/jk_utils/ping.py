@@ -1,4 +1,4 @@
-﻿
+
 
 
 import os
@@ -11,13 +11,6 @@ import json
 
 
 
-
-if sys.platform == "win32":
-	# On Windows, the best timer is time.clock()
-	__dDefaultTimer = time.clock
-else:
-	# On most other platforms the best timer is time.time()
-	__dDefaultTimer = time.time
 
 # From /usr/include/linux/icmp.h; your milage may vary.
 __ICMP_ECHO_REQUEST = 8 # Seems to be the same on Solaris.
@@ -69,13 +62,13 @@ def __checksum(source_string):
 def __receive_one_ping(my_socket, ID, timeout):
 	timeLeft = timeout
 	while True:
-		startedSelect = __dDefaultTimer()
+		startedSelect = time.time()
 		whatReady = select.select([my_socket], [], [], timeLeft)
-		howLongInSelect = (__dDefaultTimer() - startedSelect)
+		howLongInSelect = (time.time() - startedSelect)
 		if whatReady[0] == []: # Timeout
 			return (None, None)
 
-		timeReceived = __dDefaultTimer()
+		timeReceived = time.time()
 		recPacket, addr = my_socket.recvfrom(1024)
 		#print("-- received from: " + addr[0])
 		icmpHeader = recPacket[20:28]
@@ -116,13 +109,13 @@ def __receive_multiple_pings(my_socket, ID, timeout, count):
 	ret = {}
 	timeLeft = timeout
 	while True:
-		startedSelect = __dDefaultTimer()
+		startedSelect = time.time()
 		whatReady = select.select([my_socket], [], [], timeLeft)
-		howLongInSelect = (__dDefaultTimer() - startedSelect)
+		howLongInSelect = (time.time() - startedSelect)
 		if whatReady[0] == []: # Timeout
 			return ret
 
-		timeReceived = __dDefaultTimer()
+		timeReceived = time.time()
 		recPacket, addr = my_socket.recvfrom(1024)
 		#print("-- received from: " + addr[0])
 		icmpHeader = recPacket[20:28]
@@ -165,7 +158,7 @@ def __send_one_ping(my_socket, dest_ip_addr, ID):
 	header = struct.pack("bbHHh", __ICMP_ECHO_REQUEST, 0, my_checksum, ID, 1)
 	bytesInDouble = struct.calcsize("d")
 	data = bytes((192 - bytesInDouble) * "Q", 'utf-8')
-	data = struct.pack("d", __dDefaultTimer()) + data
+	data = struct.pack("d", time.time()) + data
 
 	# Calculate the checksum on the data and the dummy header.
 	my_checksum = __checksum(header + data)
@@ -299,6 +292,7 @@ def pingMultipleHosts(destinationAddresses, timeout:int, orderByIPAddr:bool = Fa
 	my_socket.close()
 	return dataMap
 #
+
 
 
 
