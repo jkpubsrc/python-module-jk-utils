@@ -18,6 +18,22 @@ class EnumBase(enum.Enum):
 		return member
 	#
 
+	def __gt__(self, other):
+		return self._value_ > int(other)
+	#
+
+	def __ge__(self, other):
+		return self._value_ >= int(other)
+	#
+
+	def __lt__(self, other):
+		return self._value_ < int(other)
+	#
+
+	def __le__(self, other):
+		return self._value_ <= int(other)
+	#
+
 	#
 	# Get an integer representation of this enumeration item.
 	#

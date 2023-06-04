@@ -41,4 +41,6 @@
 	* Removed: Dependency to `sh`
 	* Removed: `ping()` for Windows (because this functionality is not supported by Windows)
 
+* 2023-06-04:
+	* Fixed: Compensated summer time/winter time change in class `D`
 
