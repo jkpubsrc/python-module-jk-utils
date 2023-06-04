@@ -415,6 +415,9 @@ class D(object):
 		dt = self._dt.timestamp() - 24*60*60*wd
 		d = D()
 		d._dt = datetime.datetime.fromtimestamp(dt + 7 *24*60*60)
+		if d._dt.hour != 0:
+			# compensating for summer time / winter time change
+			d._dt = datetime.datetime.fromtimestamp(dt + 7 *24*60*60 + 3600)
 		return d
 	#
 
@@ -426,6 +429,9 @@ class D(object):
 		dt = self._dt.timestamp() - 24*60*60*wd
 		d = D()
 		d._dt = datetime.datetime.fromtimestamp(dt - 7 *24*60*60)
+		if d._dt.hour != 0:
+			# compensating for summer time / winter time change
+			d._dt = datetime.datetime.fromtimestamp(dt + 7 *24*60*60 - 3600)
 		return d
 	#
 
@@ -434,7 +440,11 @@ class D(object):
 	#
 	def nextDay(self):
 		d = D()
-		d._dt = datetime.datetime.fromtimestamp(self._dt.timestamp() + 24*60*60)
+		dt = self._dt.timestamp()
+		d._dt = datetime.datetime.fromtimestamp(dt + 24*60*60)
+		if d._dt.hour != 0:
+			# compensating for summer time / winter time change
+			d._dt = datetime.datetime.fromtimestamp(dt + 24*60*60 + 3600)
 		return d
 	#
 
@@ -443,7 +453,11 @@ class D(object):
 	#
 	def previousDay(self):
 		d = D()
-		d._dt = datetime.datetime.fromtimestamp(self._dt.timestamp() - 24*60*60)
+		dt = self._dt.timestamp()
+		d._dt = datetime.datetime.fromtimestamp(dt - 24*60*60)
+		if d._dt.hour != 0:
+			# compensating for summer time / winter time change
+			d._dt = datetime.datetime.fromtimestamp(dt + 24*60*60 - 3600)
 		return d
 	#
 
