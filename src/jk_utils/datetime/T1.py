@@ -48,6 +48,54 @@ class T1(object):
 	#
 
 	################################################################################################################################
+	## Helper Methods
+	################################################################################################################################
+
+	@staticmethod
+	def __tryParse(s:str):
+		for patternType, pattern in [
+			("hms", r"(?P<hour>\d\d):(?P<minute>\d\d):(?P<second>\d\d)"),
+			("hm", r"(?P<hour>\d\d):(?P<minute>\d\d)"),
+		]:
+			m = re.match("^" + pattern + "$", s)
+			if m:
+				if patternType == "hms":
+					hour = int(m.group("hour"))
+					minute = int(m.group("minute"))
+					second = int(m.group("second"))
+				elif patternType == "hm":
+					hour = int(m.group("hour"))
+					minute = int(m.group("minute"))
+					second = 0
+				else:
+					raise Exception()
+				if (0 <= hour <= 23) and (0 <= minute <= 59) and (0 <= second <= 59):
+					yield (hour, minute, second)
+	#
+
+	@staticmethod
+	def __tryParse(s:str):
+		for patternType, pattern in [
+			("hms", r"(?P<hour>\d\d):(?P<minute>\d\d):(?P<second>\d\d)"),
+			("hm", r"(?P<hour>\d\d):(?P<minute>\d\d)"),
+		]:
+			m = re.match("^" + pattern + "$", s)
+			if m:
+				if patternType == "hms":
+					hour = int(m.group("hour"))
+					minute = int(m.group("minute"))
+					second = int(m.group("second"))
+				elif patternType == "hm":
+					hour = int(m.group("hour"))
+					minute = int(m.group("minute"))
+					second = 0
+				else:
+					raise Exception()
+				if (0 <= hour <= 23) and (0 <= minute <= 59) and (0 <= second <= 59):
+					yield (hour, minute, second)
+	#
+
+	################################################################################################################################
 	## Public Methods
 	################################################################################################################################
 
@@ -69,6 +117,14 @@ class T1(object):
 
 	def __repr__(self):
 		return "{:02d}:{:02d}".format(self._hour, self._minute)
+	#
+
+	################################################################################################################################
+	## Operator Methods
+	################################################################################################################################
+
+	def __bool__(self):
+		return self._absoluteTick != 0
 	#
 
 	def __eq__(self, other):
@@ -156,25 +212,12 @@ class T1(object):
 	################################################################################################################################
 
 	@staticmethod
-	def __tryParse(s:str):
-		for patternType, pattern in [
-			("hms", r"(?P<hour>\d\d):(?P<minute>\d\d):(?P<second>\d\d)"),
-			("hm", r"(?P<hour>\d\d):(?P<minute>\d\d)"),
-		]:
-			m = re.match("^" + pattern + "$", s)
-			if m:
-				if patternType == "hms":
-					hour = int(m.group("hour"))
-					minute = int(m.group("minute"))
-					second = int(m.group("second"))
-				elif patternType == "hm":
-					hour = int(m.group("hour"))
-					minute = int(m.group("minute"))
-					second = 0
-				else:
-					raise Exception()
-				if (0 <= hour <= 23) and (0 <= minute <= 59) and (0 <= second <= 59):
-					yield (hour, minute, second)
+	def tryParseFromStr(s:str):
+		if isinstance(s, str):
+			s = s.strip()
+			for hour, minute, second in T5.__tryParse(s):
+				return T5.createFromTime(hour, minute)
+		return None
 	#
 
 	@staticmethod

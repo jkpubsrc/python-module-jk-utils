@@ -44,3 +44,8 @@
 * 2023-06-04:
 	* Fixed: Compensated summer time/winter time change in class `D`
 
+* 2024-11-29:
+	* Refactoring
+	* Improved: Added __bool__ to T1 and T5
+	* Migrated to pyproject.toml
+
