@@ -19,7 +19,7 @@
 		"license": "Apache2",
 		"name": "jk_utils",
 		"packageClass": "python-module",
-		"version": "0.2024.11.20"
+		"version": "0.2025.3.8"
 	},
 	"requirements": {
 		"htmlcssjs_packages": [],

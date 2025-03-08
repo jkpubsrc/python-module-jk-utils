@@ -49,3 +49,7 @@
 	* Improved: Added __bool__ to T1 and T5
 	* Migrated to pyproject.toml
 
+* 2025-03-08:
+	* Added: `secondsToDHMS()`, `secondsToDHMSf()`, `secondsToYMWDHMSf()`
+	* Added: `DurationMeter`
+
